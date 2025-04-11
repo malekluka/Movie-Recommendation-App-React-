@@ -157,7 +157,7 @@ function Login() {
                         </button>
                     </div>
 
-                    <p className="text-center text-sm text-gray-600">Don't have an account?
+                    <p className="text-center text-sm text-gray-600">Do not have an account?
                         <Link to="/signup" className="text-indigo-600 hover:text-indigo-500"> Sign Up</Link>
                     </p>
                 </form>
