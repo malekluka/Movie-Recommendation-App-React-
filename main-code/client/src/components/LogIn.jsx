@@ -2,8 +2,6 @@ import axios from 'axios';
 import { useState, useContext, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../App'; // Import UserContext
-import { faMessage } from '@fortawesome/free-regular-svg-icons'; // Import the regular message icon
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesomeIcon component
 
 function Login() {
     const { setUser } = useContext(UserContext); // Access setUser from context
