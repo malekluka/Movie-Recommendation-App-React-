@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
@@ -109,7 +109,7 @@ function HomePage() {
 
       {/* Stylish Divider */}
       <div className="my-6 flex justify-center">
-        <div className="h-1 bg-gray-600 rounded-full shadow-lg w-1/2" />
+        <div className="h-1 bg-gray-600 rounded-full shadow-lg w-2/3" />
       </div>
 
       {/* New Releases Section - Cards */}
@@ -155,18 +155,10 @@ function HomePage() {
         {newReleases.length > 8 && (
           <button
             onClick={() => setShowMoreNewReleases(!showMoreNewReleases)}
-            className="mt-6 bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg flex items-center"
+            className="relative group mt-6 px-6 py-3 rounded-xl bg-blue-950 text-blue-200 text-lg font-extrabold hover:text-white transition-all duration-200"
           >
-            <span>{showMoreNewReleases ? 'See Less' : 'See More'}</span>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5 ml-2"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              aria-hidden="true"
-            >
-              <path fillRule="evenodd" d="M10 3a1 1 0 011 1v4h4a1 1 0 110 2h-4v4a1 1 0 11-2 0v-4H6a1 1 0 110-2h4V4a1 1 0 011-1z" clipRule="evenodd" />
-            </svg>
+            <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-xl blur opacity-60 group-hover:opacity-100 transition duration-200"></div>
+            <span className="relative">{showMoreNewReleases ? 'See Less' : 'See More'}</span>
           </button>
         )}
       </div>
@@ -174,7 +166,7 @@ function HomePage() {
 
       {/* Stylish Divider */}
       <div className="my-6 flex justify-center">
-        <div className="h-1 bg-gray-600 rounded-full shadow-lg w-1/2" />
+        <div className="h-1 bg-gray-600 rounded-full shadow-lg w-2/3" />
       </div>
 
       {/* Top Rated Section - Cards */}
@@ -219,18 +211,19 @@ function HomePage() {
 
         {/* See More Button */}
         {topRated.length > 8 && (
-          <button onClick={() => setShowMoreTopRated(!showMoreTopRated)} className="mt-6 bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg flex items-center">
-            <span>{showMoreTopRated ? 'See Less' : 'See More'}</span>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-              <path fillRule="evenodd" d="M10 3a1 1 0 011 1v4h4a1 1 0 110 2h-4v4a1 1 0 11-2 0v-4H6a1 1 0 110-2h4V4a1 1 0 011-1z" clipRule="evenodd" />
-            </svg>
+          <button
+            onClick={() => setShowMoreTopRated(!showMoreTopRated)}
+            className="relative group mt-6 px-6 py-3 rounded-xl bg-blue-950 text-blue-200 text-lg font-extrabold hover:text-white transition-all duration-200"
+          >
+            <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-xl blur opacity-60 group-hover:opacity-100 transition duration-200"></div>
+            <span className="relative">{showMoreTopRated ? 'See Less' : 'See More'}</span>
           </button>
         )}
       </div>
 
       {/* Stylish Divider */}
       <div className="my-6 flex justify-center">
-        <div className="h-1 bg-gray-600 rounded-full shadow-lg w-1/2" />
+        <div className="h-1 bg-gray-600 rounded-full shadow-lg w-2/3" />
       </div>
 
       {/* Upcoming Section - Cards with Alert */}
@@ -278,11 +271,12 @@ function HomePage() {
 
         {/* See More Button */}
         {upcoming.length > 8 && (
-          <button onClick={() => setShowMoreUpcoming(!showMoreUpcoming)} className="mt-6 bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg  flex items-center">
-            <span>{showMoreUpcoming ? 'See Less' : 'See More'}</span>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-              <path fillRule="evenodd" d="M10 3a1 1 0 011 1v4h4a1 1 0 110 2h-4v4a1 1 0 11-2 0v-4H6a1 1 0 110-2h4V4a1 1 0 011-1z" clipRule="evenodd" />
-            </svg>
+          <button
+            onClick={() => setShowMoreUpcoming(!showMoreUpcoming)}
+            className="relative group mt-6 px-6 py-3 rounded-xl bg-blue-950 text-blue-200 text-lg font-extrabold hover:text-white transition-all duration-200"
+          >
+            <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-xl blur opacity-60 group-hover:opacity-100 transition duration-200"></div>
+            <span className="relative">{showMoreUpcoming ? 'See Less' : 'See More'}</span>
           </button>
         )}
       </div>
