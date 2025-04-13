@@ -373,7 +373,7 @@ function Header() {
         {filteredResults.length > 0 && (
           <div
           className="absolute bg-white text-black p-2 rounded-md shadow-lg w-[462px] z-[1000] overflow-y-auto"
-          style={{ top: '68px', left: '50%', transform: 'translateX(-50%)', maxHeight: '310px' }}
+          style={{ top: '68px', left: '53.2%', transform: 'translateX(-50%)', maxHeight: '310px' }}
         >
         
             {filteredResults.map((movie) => (
