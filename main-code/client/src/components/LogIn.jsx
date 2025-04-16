@@ -12,55 +12,66 @@ function Login() {
     });
     const [rememberMe, setRememberMe] = useState(false); // State for "Remember Me"
     const [suggestedEmail, setSuggestedEmail] = useState(''); // State for suggested email
-    const [suggestedPassword, setSuggestedPassword] = useState(''); // State for suggested password
     const [showSuggestions, setShowSuggestions] = useState(false); // State to toggle pop-up
     const emailInputRef = useRef(null); // Ref for email input field
 
     // Check if user data exists in localStorage on component mount
     useEffect(() => {
         const storedEmail = localStorage.getItem('rememberedEmail');
-        const storedPassword = localStorage.getItem('rememberedPassword');
-        if (storedEmail && storedPassword) {
+        if (storedEmail) {
             setSuggestedEmail(storedEmail);
-            setSuggestedPassword(storedPassword);
             setRememberMe(true);
         }
     }, []);
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        try {
+            const result = await axios.post('http://localhost:3001/login', {
+                email: Inputvalue.email,
+                password: Inputvalue.password
+            });
+
+            if (result.data.msg === "success") {
+                setUser({ name: result.data.name, email: Inputvalue.email }); // Update user context dynamically
+
+                if (rememberMe) {
+                    // Save only the email if "Remember Me" is checked
+                    localStorage.setItem('rememberedEmail', Inputvalue.email);
+                } else {
+                    // Clear remembered email if "Remember Me" is unchecked
+                    localStorage.removeItem('rememberedEmail');
+                }
+
+                navigate('/'); // Redirect to homepage
+            } else {
+                alert('Please enter correct Email and Password');
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Could not find an account with such credentials. Do you have an account already?');
+        }
+    };
+
+    const handleUseRemembered = () => {
+        const storedEmail = localStorage.getItem('rememberedEmail');
+
+        if (storedEmail) {
+            setInputvalue({
+                email: storedEmail,
+                password: '' // Leave the password field empty
+            });
+            setShowSuggestions(false);
+        } else {
+            alert('No remembered email found.');
+        }
+    };
 
     return (
         <div className="min-h-screen flex items-center justify-center">
             <div className="bg-white p-8 rounded-lg border shadow-lg w-full max-w-md">
                 <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Login</h2>
-                <form onSubmit={(e) => {
-                    e.preventDefault();
-                    axios.post('http://localhost:3001/login', {
-                        email: Inputvalue.email,
-                        password: Inputvalue.password
-                    })
-                        .then(result => {
-                            if (result.data.msg === "success") {
-                                localStorage.setItem('username', result.data.name); // Save username in localStorage
-                                setUser({ name: result.data.name }); // Update user context dynamically
-                                if (rememberMe) {
-                                    // Save email and password if "Remember Me" is checked
-                                    localStorage.setItem('rememberedEmail', Inputvalue.email);
-                                    localStorage.setItem('rememberedPassword', Inputvalue.password);
-                                } else {
-                                    // Clear remembered email and password if "Remember Me" is unchecked
-                                    localStorage.removeItem('rememberedEmail');
-                                    localStorage.removeItem('rememberedPassword');
-                                }
-                                navigate('/'); // Redirect to homepage
-                            } else {
-                                alert('Please enter correct Email and Password');
-                            }
-                        })
-                        .catch(err => {
-                            console.error(err);
-                            alert('Could not find an account with such credentials. Do you have an account already?');
-                        });
-                }} className="space-y-4">
-
+                <form onSubmit={handleLogin} className="space-y-4">
                     <div className="relative">
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email Address</label>
                         <input
@@ -86,7 +97,7 @@ function Login() {
                                 className="absolute bg-gray-100 border border-gray-300 shadow-lg p-4 rounded-lg z-10"
                                 style={{
                                     bottom: emailInputRef.current?.offsetHeight + 10 || 0, // Position above the email input
-                                    left: '75%', // Center horizontally
+                                    left: '50%', // Center horizontally
                                     transform: 'translateX(-50%)', // Center relative to the input
                                     width: '90%', // Slightly smaller width
                                     boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)', // Softer shadow
@@ -94,15 +105,11 @@ function Login() {
                             >
                                 <h4 className="text-sm font-bold mb-2 text-indigo-600 text-center">Remember Me</h4>
                                 <p className="text-sm text-gray-700"><strong>Email:</strong> {suggestedEmail}</p>
-                                <p className="text-sm text-gray-700"><strong>Password:</strong> ••••••••</p>
-                                <div className="flex justify-end mt-2">
+                                <div className="flex justify-end">
                                     <button
                                         type="button"
                                         className="text-sm text-indigo-600 hover:text-indigo-500 mr-2"
-                                        onClick={() => {
-                                            setInputvalue({ email: suggestedEmail, password: suggestedPassword });
-                                            setShowSuggestions(false);
-                                        }}
+                                        onClick={handleUseRemembered} // Use the remembered email
                                     >
                                         Use
                                     </button>

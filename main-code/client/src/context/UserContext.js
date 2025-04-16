@@ -1,25 +1,30 @@
-import React, { createContext, useState, useContext } from 'react';
+// import { createContext, useState, useContext } from 'react';
+// import PropTypes from 'prop-types';
 
-const UserContext = createContext();
+// const UserContext = createContext();
 
-export const useUser = () => {
-    return useContext(UserContext);
-};
+// export const useUser = () => {
+//     return useContext(UserContext);
+// };
 
-export const UserProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
+// UserProvider.propTypes = {
+//     children: PropTypes.node.isRequired,
+// };
 
-    const loginUser = (userData) => {
-        setUser(userData);
-    };
+// export const UserProvider = ({ children }) => {
+//     const [user, setUser] = useState(null);
 
-    const logoutUser = () => {
-        setUser(null);
-    };
+//     const loginUser = (userData) => {
+//         setUser(userData); // Store user data (name and email)
+//     };
 
-    return (
-        <UserContext.Provider value={{ user, loginUser, logoutUser }}>
-            {children}
-        </UserContext.Provider>
-    );
-};
+//     const logoutUser = () => {
+//         setUser(null); // Clear user data
+//     };
+
+//     return (
+//         <UserContext.Provider value={{ user, loginUser, logoutUser }}>
+//             {children}
+//         </UserContext.Provider>
+//     );
+// };

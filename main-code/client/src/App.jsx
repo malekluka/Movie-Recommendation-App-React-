@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext } from 'react';
+import { useState, useEffect, createContext } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';  
 import './styles.css'; // Adjust the path if necessary
 import HomePage from './components/HomePage.jsx'; 
@@ -13,14 +13,16 @@ export const UserContext = createContext(); // Create UserContext
 
 function App() {
   const [user, setUser] = useState(null); // State to hold logged-in user
-  const [searchResults, setSearchResults] = useState([]); // State to hold search results
 
   useEffect(() => {
-    const username = localStorage.getItem('username');
-    if (username) {
-      setUser({ name: username });
+    if (!user) { // Only set user if no user is currently logged in
+      const username = localStorage.getItem('username');
+      const email = localStorage.getItem('useremail'); // Retrieve email from localStorage
+      if (username && email) {
+        setUser({ name: username, email }); // Set both username and email in user state
+      }
     }
-  }, []);
+  }, [user]);
 
   return (
     <UserContext.Provider value={{ user, setUser }}> {/* Provide user context */}

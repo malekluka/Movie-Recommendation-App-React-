@@ -292,16 +292,19 @@ function Header() {
                   <ul className="py-2">
                     <li
                       className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
-                      onClick={() => setDropdownOpen(false)}
+                      onClick={() => {
+                        navigate('/userprofile'); // Navigate first
+                        setDropdownOpen(false); // Then close the dropdown
+                      }}
                     >
-                      <Link to="/userprofile">User Profile</Link>
+                      User Profile
                     </li>
                     {user ? (
                       <li
                         className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                         onClick={() => {
-                          handleLogout();
-                          setDropdownOpen(false);
+                          handleLogout(); // Log out the user
+                          setDropdownOpen(false); // Then close the dropdown
                         }}
                       >
                         Log Out
@@ -309,16 +312,22 @@ function Header() {
                     ) : (
                       <li
                         className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
-                        onClick={() => setDropdownOpen(false)}
+                        onClick={() => {
+                          navigate('/login'); // Navigate first
+                          setDropdownOpen(false); // Then close the dropdown
+                        }}
                       >
-                        <Link to="/login">Log In</Link>
+                        Log In
                       </li>
                     )}
                     <li
                       className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
-                      onClick={() => setDropdownOpen(false)}
+                      onClick={() => {
+                        navigate('/signup'); // Navigate first
+                        setDropdownOpen(false); // Then close the dropdown
+                      }}
                     >
-                      <Link to="/signup">Sign Up</Link>
+                      Sign Up
                     </li>
                   </ul>
                 </div>

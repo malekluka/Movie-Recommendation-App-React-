@@ -30,7 +30,8 @@ function Signup() {
             console.log(result);
             alert('User registered successfully!');
             
-           navigate('/login');
+            // localStorage.setItem('useremail', Inputvalue.email); // Save email in localStorage
+            navigate('/login');
         } catch (err) {
             console.error(err);
             setError('An error occurred. Please try again.');

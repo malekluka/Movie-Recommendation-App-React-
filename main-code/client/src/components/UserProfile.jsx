@@ -1,180 +1,120 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from "../App"; // Import UserContext
 
 export default function UserProfile() {
-  // Header State
-  const [isHovered, setIsHovered] = useState(false);
-  
-  // Profile Update State
-  const [isEditing, setIsEditing] = useState(false);
-  const [userName, setUserName] = useState("User Name");
-  const [userEmail, setUserEmail] = useState("useremail@gmail.com");
+  const { user } = useContext(UserContext); // Access user from context
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [profilePic, setProfilePic] = useState(null);
+  const [selectedTab, setSelectedTab] = useState("favorites");
 
-  // Nav State
-  const [selectedItem, setSelectedItem] = useState(null);
-
-  // Wishlist and Favorites State
-  const [isWished, setIsWished] = useState(false);
-  const [movieData, setMovieData] = useState({
-    title: "Loading...",
-    description: "",
-    posterUrl: "",
-    rating: 0,
-  });
-
-  // Handle User Profile Save
-  const handleSave = () => {
-    setIsEditing(false);
-    // Save username & email here
+  const handleProfilePicUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => setProfilePic(reader.result);
+      reader.readAsDataURL(file);
+    }
   };
 
-  // Handle Favorite Toggle
-  const toggleWished = () => {
-    setIsWished(!isWished);
-  };
-
-  // Fetch Movie Data from API
   useEffect(() => {
-    const options = {
-        method: 'GET',
-        headers: {
-          accept: 'application/json',
-          Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIyOGE5ZDRhNWZjYjAyNDFkNzIxMGMzZjFkMTdmNjNmNCIsIm5iZiI6MTcyOTM3ODAyNC44NTM3MzUsInN1YiI6IjY3MDA1MmI3YzlhMTBkNDZlYTdjZTYwNSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.nz-AsdMqq6lbOjcIoRrDKwXwPhbiwxYAwyulmUijz8Q'
-        }
-      };
-      
-      fetch('https://api.themoviedb.org/3/account/21553711/favorite/movies?language=en-US&page=1&sort_by=created_at.asc', options)
-        .then(res => res.json())
-        .then(res => console.log(res))
-        .catch(err => console.error(err));
-  }, []);
+    if (user) {
+      setUserName(user.name); // Set username from context
+      setUserEmail(user.email); // Set email from context
+    }
+  }, [user]);
 
-  // Handle Nav Item Click
-  const handleClick = (item) => {
-    setSelectedItem(item);
-  };
+  // useEffect(() => {
+  //   // Fetch user's favorites and watch later lists from API
+  //   const fetchUserData = async () => {
+  //     try {
+  //       const favoritesResponse = await fetch("/api/user/favorites");
+  //       if (!favoritesResponse.ok) throw new Error("Failed to fetch favorites");
+  //       const watchLaterResponse = await fetch("/api/user/watchlater");
+  //       if (!watchLaterResponse.ok) throw new Error("Failed to fetch watch later");
+
+  //       setFavorites(await favoritesResponse.json());
+  //       setWatchLater(await watchLaterResponse.json());
+  //     } catch (error) {
+  //       console.error("Error fetching user data:", error);
+  //     }
+  //   };
+  //   fetchUserData();
+  // }, []);
 
   return (
-    <div className="bg-gray-100 p-4">
-      {/* Header */}
-      <header className="flex justify-between items-center bg-gray-100 p-4">
-        <div id="logo-img" className="flex items-center flex-col">
-          <img src="../assets/video-camera.png" alt="Logo" className="w-10 h-10" />
-        </div>
-
-        <div id="search-bar" className="search-bar w-full max-w-md mx-auto">
-          <input
-            type="text"
-            className="w-full px-4 py-2 text-gray-800 bg-white border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-500 focus:outline-none"
-            placeholder="Search"
-          />
-        </div>
-
-        <div id="profile-img" className="flex items-center relative" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-          <img src="../assets/user.png" alt="User Profile" className="w-10 h-10 rounded-full" />
-          {isHovered && (
-            <div className="absolute shadow-xl bg-white w-24 rounded top-10 -left-12 flex flex-col items-center px-1 py-3 gap-2">
-              <Link to="/home" className="hover:text-blue-500 text-sm">Home</Link>
-              <Link to="/signup" className="hover:text-blue-500 text-sm">Sign-Up</Link>
-              <Link to="/signout" className="hover:text-blue-500 text-sm">Sign-Out</Link>
-            </div>
-          )}
-        </div>
-      </header>
-
-      {/* Profile Update */}
-      <div className="flex items-center bg-white shadow-xl px-4 py-16">
-        <img
-          src="../assets/user.png" // Placeholder for the profile image
-          alt="User Profile"
-          className="w-16 h-16 rounded-full border border-gray-300 mr-16"
-        />
-        <div className="ml-36 flex flex-col" id="user-data">
-          {isEditing ? (
-            <>
-              <input
-                type="text"
-                className="text-lg font-semibold border border-gray-300 rounded p-1 mb-2"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-              />
-              <input
-                type="email"
-                className="text-gray-500 border border-gray-300 rounded p-1 mb-2"
-                value={userEmail}
-                onChange={(e) => setUserEmail(e.target.value)}
-              />
-            </>
-          ) : (
-            <>
-              <h2 className="text-lg font-semibold">{userName}</h2>
-              <p className="text-gray-500">{userEmail}</p>
-            </>
-          )}
-          <button
-            className="mt-2 px-4 py-2 border bg-blue-500 hover:bg-blue-700 rounded-lg text-white"
-            onClick={isEditing ? handleSave : () => setIsEditing(true)}
+    <div className="container mx-auto p-4">
+      {/* Profile Section */}
+      <div className="flex items-center bg-white shadow-md p-6 rounded-lg">
+        <div className="relative">
+          <div
+            className="w-24 h-24 rounded-full border flex items-center justify-center bg-gray-200 text-4xl"
           >
-            {isEditing ? "Save" : "Edit Profile"}
-          </button>
+            {profilePic ? (
+              <img
+                src={profilePic}
+                alt="Profile"
+                className="w-full h-full rounded-full object-cover"
+              />
+            ) : (
+              "📷"
+            )}
+          </div>
+          <label className="absolute bottom-0 right-0 w-7 h-7 bg-blue-500 text-white text-xl font-bold rounded-full flex items-center justify-center cursor-pointer shadow-md hover:bg-blue-900 transition">
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleProfilePicUpload}
+            />
+            +
+          </label>
+        </div>
+        <div className="ml-6">
+          <h2 className="text-2xl font-bold">{userName}</h2>
+          <p className="text-gray-600">{userEmail}</p>
         </div>
       </div>
 
-      {/* Nav for Wishlist and My Favorites */}
-      <nav className="bg-gray-100 p-4 rounded-md shadow-md mt-4">
-        <ul className="flex justify-between">
+      {/* Navigation Tabs */}
+      <nav className="mt-6">
+        <ul className="flex justify-center space-x-4">
           <li
-            onClick={() => handleClick("wishlist")}
-            className={`cursor-pointer px-4 py-2 rounded-md transition-colors w-2/4 text-center ${selectedItem === "wishlist" ? "bg-blue-500 text-white" : "bg-white text-gray-700 hover:bg-blue-100"}`}
+            className={`cursor-pointer px-4 py-2 rounded-lg ${
+              selectedTab === "favorites"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-700"
+            }`}
+            onClick={() => setSelectedTab("favorites")}
           >
-            WishList
+            Favorites
           </li>
           <li
-            onClick={() => handleClick("favorites")}
-            className={`cursor-pointer px-4 py-2 rounded-md transition-colors w-2/4 text-center ${selectedItem === "favorites" ? "bg-blue-500 text-white" : "bg-white text-gray-700 hover:bg-blue-100"}`}
+            className={`cursor-pointer px-4 py-2 rounded-lg ${
+              selectedTab === "watchlater"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-700"
+            }`}
+            onClick={() => setSelectedTab("watchlater")}
           >
-            My Favorites
+            Watch Later
           </li>
         </ul>
       </nav>
 
-      {/* Conditionally Render Wishlist and My Favorites */}
-      <div className="mt-4">
-        {selectedItem === "wishlist" && (
-          <div className="w-64 border rounded-lg shadow-md p-4">
-            <div className="h-32 bg-gray-200 flex items-center justify-center rounded-t-lg">
-              <span>{isWished ? "Movie is in WishList" : "No Movies in WishList"}</span>
-            </div>
-            <div className="flex justify-between items-center mt-4">
-              <h3 className="font-semibold text-lg">WishList Movie</h3>
-              <div onClick={toggleWished} className="cursor-pointer text-2xl">
-                {isWished ? "♥" : "♡"}
-              </div>
-            </div>
-            <p className="text-sm text-gray-600 mt-2">Description of the movie...</p>
+      {/* Content Section */}
+      <div className="mt-6">
+        {selectedTab === "favorites" && (
+          <div>
+            <h3 className="text-xl font-bold mb-4">Your Favorites</h3>
+            <p className="text-gray-600">No favorites added yet.</p>
           </div>
         )}
-        {selectedItem === "favorites" && (
-          <div className="w-64 border rounded-lg shadow-md p-4">
-            <div className="h-32 bg-gray-200 flex items-center justify-center rounded-t-lg">
-              {movieData.posterUrl ? (
-                <img src={movieData.posterUrl} alt="Film Poster" className="h-full w-full object-cover" />
-              ) : (
-                <span>Loading image...</span>
-              )}
-            </div>
-            <div className="flex justify-between items-center mt-4">
-              <h3 className="font-semibold text-lg">{movieData.title}</h3>
-              <div onClick={() => setIsWished(!isWished)} className="cursor-pointer text-2xl">
-                {isWished ? "♥" : "♡"}
-              </div>
-            </div>
-            <p className="text-sm text-gray-600 mt-2">{movieData.description}</p>
-            <div className="flex space-x-1 mt-4 text-2xl">
-              {[...Array(5)].map((star, index) => (
-                <span key={index}>{index < movieData.rating ? "★" : "☆"}</span>
-              ))}
-            </div>
+
+        {selectedTab === "watchlater" && (
+          <div>
+            <h3 className="text-xl font-bold mb-4">Watch Later</h3>
+            <p className="text-gray-600">No movies in Watch Later list.</p>
           </div>
         )}
       </div>
