@@ -41,6 +41,7 @@ function Header() {
   const dropdownRef = useRef(null);
   const searchContainerRef = useRef(null);
   const filterPopupRef = useRef(null); // Add a ref for the filter popup
+  const searchInputRef = useRef(null); // Ref for the search input
 
   const cache = useMemo(() => new Map(), []); // Cache to store fetched results
   const debouncedQuery = useDebounce(searchQuery, 500); // Debounce delay of 500ms
@@ -212,9 +213,9 @@ function Header() {
   };
 
   return (
-    <nav className="relative overflow-visible rounded-xl border border-blue-500/20 mb-8">
+    <nav className="relative w-full overflow-visible rounded-xl border border-blue-500/20 mb-8">
       {/* Animated Background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-blue-950 via-blue-900 to-blue-950 backdrop-blur-md"></div>
+      <div className="absolute inset-0 w-full bg-gradient-to-r from-blue-950 via-blue-900 to-blue-950 backdrop-blur-md"></div>
       
       {/* Floating Bubbles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -227,21 +228,25 @@ function Header() {
       </div>
 
       {/* Main Navbar Content */}
-      <div className="relative px-4 sm:px-8 py-4">
-        <div className="flex items-center justify-between">
+      <div className="relative w-full px-2 sm:px-4 py-3"> {/* Adjusted padding for smaller screens */}
+        <div className="flex items-center justify-between w-full">
           {/* Logo */}
-          <div className="flex items-center space-x-3 group">
-            <Link to="/" className="flex items-center space-x-2">
-              <img src="/myicon.ico" alt="Site Icon" className="relative -mt-2 w-8 h-8" />
-              <span className="block text-xl sm:text-2xl font-bold text-white">MovieScout</span>
+          <div className="flex items-center space-x-2 group">
+            <Link to="/" className="flex items-center space-x-1">
+              <img src="/myicon.ico" alt="Site Icon" className="relative w-6 h-6 sm:w-8 sm:h-8" /> {/* Adjusted size */}
+              <span className="block text-lg sm:text-xl font-bold text-white">MovieScout</span> {/* Adjusted font size */}
             </Link>
           </div>
 
           {/* Centered Search Bar and Categories */}
           {/* Search Bar */}
-          <div className="relative flex-1 max-w-md" ref={searchContainerRef}>
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <FontAwesomeIcon icon={faSearch} className="text-blue-200" />
+          <div className="relative flex-1 max-w-xs sm:max-w-md" ref={searchContainerRef}> {/* Adjusted max width */}
+            <div className="absolute inset-y-0 left-0 pl-2 sm:pl-3 flex items-center">
+              <FontAwesomeIcon
+                icon={faSearch}
+                className="text-blue-200 cursor-pointer"
+                onClick={() => searchInputRef.current?.focus()} // Focus the search input
+              />
             </div>
             <input
               type="text"
@@ -249,7 +254,8 @@ function Header() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onFocus={handleSearchFocus} // Restore results on focus
-              className="w-full pl-10 pr-4 py-2 bg-blue-950/50 border border-blue-500/30 rounded-lg text-white placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              ref={searchInputRef} // Attach the ref to the input
+              className="w-full pl-8 sm:pl-10 pr-3 sm:pr-4 py-1 sm:py-2 bg-blue-950/50 border border-blue-500/30 rounded-lg text-white placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base" // Adjusted padding and font size
             />
             <button
               className="absolute right-2 top-1/2 transform -translate-y-1/2 text-blue-200 hover:text-white"
@@ -260,17 +266,18 @@ function Header() {
           </div>
 
           {/* Right Side Buttons */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4"> {/* Adjusted spacing */}
             {/* Mobile Search Button */}
             <button 
               className="md:hidden relative group"
               onClick={() => {
                 setIsMobileMenuOpen(false);
+                searchInputRef.current?.focus(); // Focus the search input
               }}
             >
               <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-400 rounded blur opacity-60 group-hover:opacity-100 transition duration-200"></div>
-              <div className="relative p-2 bg-blue-950 rounded leading-none">
-                <FontAwesomeIcon icon={faSearch} className="w-5 h-5 text-blue-200 group-hover:text-white" />
+              <div className="relative p-1 sm:p-2 bg-blue-950 rounded leading-none"> {/* Adjusted padding */}
+                <FontAwesomeIcon icon={faSearch} className="w-4 h-4 sm:w-5 sm:h-5 text-blue-200 group-hover:text-white" /> {/* Adjusted size */}
               </div>
             </button>
 
@@ -281,14 +288,14 @@ function Header() {
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
                 <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-400 rounded blur opacity-60 group-hover:opacity-100 transition duration-200"></div>
-                <div className="relative p-2 bg-blue-950 rounded-full leading-none flex items-center">
-                  <FontAwesomeIcon icon={faUser} className="w-5 h-5 text-blue-200 group-hover:text-white" />
-                  {user && <span className="ml-2 text-blue-200 group-hover:text-white">{user.name}</span>}
+                <div className="relative p-1 sm:p-2 bg-blue-950 rounded-full leading-none flex items-center"> {/* Adjusted padding */}
+                  <FontAwesomeIcon icon={faUser} className="w-4 h-4 sm:w-5 sm:h-5 text-blue-200 group-hover:text-white" /> {/* Adjusted size */}
+                  {user && <span className="ml-1 sm:ml-2 text-blue-200 group-hover:text-white text-sm sm:text-base">{user.name}</span>} {/* Adjusted spacing and font size */}
                 </div>
               </button>
 
               {dropdownOpen && (
-                <div className="fixed right-4 top-16 bg-white text-gray-800 rounded shadow-lg w-48 z-[1000]" ref={dropdownRef}>
+                <div className="fixed right-2 sm:right-4 top-16 bg-white text-gray-800 rounded shadow-lg w-40 sm:w-48 z-[1000]" ref={dropdownRef}> {/* Adjusted width */}
                   <ul className="py-2">
                     <li
                       className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
@@ -336,16 +343,15 @@ function Header() {
 
             {/* Mobile Menu Button */}
             <button 
-              className="md:hidden relative group"
+              className="md:hidden relative group " // Ensure the button stays within the screen
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle mobile menu"
             >
               <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-400 rounded blur opacity-60 group-hover:opacity-100 transition duration-200"></div>
-              <div className="relative p-2 bg-blue-950 rounded leading-none">
+              <div className="relative p-1 sm:p-2 bg-blue-950 rounded leading-none"> {/* Adjusted padding */}
                 <FontAwesomeIcon 
                   icon={isMobileMenuOpen ? faTimes : faBars} 
-                  className="w-5 h-5 text-blue-200 group-hover:text-white" 
-                />
+                  className="w-4 h-4 sm:w-5 sm:h-5 text-blue-200 group-hover:text-white" /> {/* Adjusted size */}
               </div>
             </button>
           </div>
@@ -381,10 +387,15 @@ function Header() {
         {/* Search Results (Mobile) */}
         {filteredResults.length > 0 && (
           <div
-          className="absolute bg-white text-black p-2 rounded-md shadow-lg w-[462px] z-[1000] overflow-y-auto"
-          style={{ top: '68px', left: '53.2%', transform: 'translateX(-50%)', maxHeight: '310px' }}
-        >
-        
+            className="absolute bg-white text-black p-2 rounded-md shadow-lg z-[1000] overflow-y-auto"
+            style={{
+              top: '68px',
+              left: '54%',
+              transform: 'translateX(-50%)',
+              width: window.innerWidth <= 640 ? '90%' : '462px', // Adjust width for screens smaller than 640px
+              maxHeight: '310px',
+            }}
+          >
             {filteredResults.map((movie) => (
               <Link 
                 to={`/movies/${movie.id}`} 
@@ -416,11 +427,11 @@ function Header() {
         {/* Filter Popup */}
         {filterPopupOpen && (
           <div
-            ref={filterPopupRef} // Attach the ref to the filter popup
-            className="fixed bg-white text-gray-800 rounded shadow-lg w-48 p-4 z-[9999] border border-gray-800" // Increased z-index to ensure visibility
-            style={{ top: '49px', right: '300px' }}
-            onClick={(e) => e.stopPropagation()} // Prevent the click event from propagating
-          >
+          ref={filterPopupRef}
+          className="fixed top-[49px] right-[20px] sm:right-[100px] xl:right-[300px] bg-white text-gray-800 rounded shadow-lg w-48 p-4 z-[9999] border border-gray-800"
+          onClick={(e) => e.stopPropagation()}
+        >
+        
             <div className="flex flex-col">
               <label className="mb-1">Rating (up to 10):</label>
               <input
