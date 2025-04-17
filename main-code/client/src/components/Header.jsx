@@ -366,7 +366,7 @@ function Header() {
             className="absolute bg-white text-black p-2 rounded-md shadow-lg z-[1000] overflow-y-auto"
             style={{
               top: window.innerWidth <= 640 ? '49px' : '61px',
-              left: window.innerWidth > 1400 ? '54.3%' : window.innerWidth <= 640 ? '59%' : '54.5%',
+              left: window.innerWidth > 1400 ? '54.3%' : window.innerWidth <= 640 ? '63%' : '54.5%',
               transform: 'translateX(-50%)',
               width: window.innerWidth <= 640 ? '57%' : '462px', // Adjust width for screens smaller than 640px
               maxHeight: '310px',
