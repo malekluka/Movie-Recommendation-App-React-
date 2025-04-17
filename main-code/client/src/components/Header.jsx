@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext, useRef, useCallback, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faFilter, faUser, faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faFilter, faUser, faSearch} from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -239,8 +239,7 @@ function Header() {
           </div>
 
           {/* Centered Search Bar and Categories */}
-          {/* Search Bar */}
-          <div className="relative flex-1 max-w-xs sm:max-w-md" ref={searchContainerRef}> {/* Adjusted max width */}
+          <div className="relative flex-1 ml-1 max-w-[46%] sm:max-w-md" ref={searchContainerRef}> {/* Adjusted max width */}
             <div className="absolute inset-y-0 left-0 pl-2 sm:pl-3 flex items-center">
               <FontAwesomeIcon
                 icon={faSearch}
@@ -265,21 +264,9 @@ function Header() {
             </button>
           </div>
 
+
           {/* Right Side Buttons */}
-          <div className="flex items-center space-x-2 sm:space-x-4"> {/* Adjusted spacing */}
-            {/* Mobile Search Button */}
-            <button 
-              className="md:hidden relative group"
-              onClick={() => {
-                setIsMobileMenuOpen(false);
-                searchInputRef.current?.focus(); // Focus the search input
-              }}
-            >
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-400 rounded blur opacity-60 group-hover:opacity-100 transition duration-200"></div>
-              <div className="relative p-1 sm:p-2 bg-blue-950 rounded leading-none"> {/* Adjusted padding */}
-                <FontAwesomeIcon icon={faSearch} className="w-4 h-4 sm:w-5 sm:h-5 text-blue-200 group-hover:text-white" /> {/* Adjusted size */}
-              </div>
-            </button>
+          <div className="flex items-center space-x-2 mt-0.5 ml-1 sm:space-x-4"> {/* Adjusted spacing */}
 
             {/* User Menu */}
             <div className="relative" ref={dropdownRef}>
@@ -342,18 +329,7 @@ function Header() {
             </div>
 
             {/* Mobile Menu Button */}
-            <button 
-              className="md:hidden relative group " // Ensure the button stays within the screen
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Toggle mobile menu"
-            >
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-400 rounded blur opacity-60 group-hover:opacity-100 transition duration-200"></div>
-              <div className="relative p-1 sm:p-2 bg-blue-950 rounded leading-none"> {/* Adjusted padding */}
-                <FontAwesomeIcon 
-                  icon={isMobileMenuOpen ? faTimes : faBars} 
-                  className="w-4 h-4 sm:w-5 sm:h-5 text-blue-200 group-hover:text-white" /> {/* Adjusted size */}
-              </div>
-            </button>
+            
           </div>
         </div>
 
@@ -385,14 +361,14 @@ function Header() {
         )}
 
         {/* Search Results (Mobile) */}
-        {filteredResults.length > 0 && (
+        {filteredResults.length > 0 &&  (
           <div
             className="absolute bg-white text-black p-2 rounded-md shadow-lg z-[1000] overflow-y-auto"
             style={{
-              top: '68px',
-              left: '54%',
+              top: window.innerWidth <= 640 ? '49px' : '61px',
+              left: window.innerWidth > 1400 ? '54.3%' : window.innerWidth <= 640 ? '59%' : '54.5%',
               transform: 'translateX(-50%)',
-              width: window.innerWidth <= 640 ? '90%' : '462px', // Adjust width for screens smaller than 640px
+              width: window.innerWidth <= 640 ? '57%' : '462px', // Adjust width for screens smaller than 640px
               maxHeight: '310px',
             }}
           >
