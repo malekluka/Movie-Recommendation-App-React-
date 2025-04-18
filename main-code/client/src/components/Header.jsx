@@ -33,7 +33,7 @@ function Header() {
   const [releaseYear, setReleaseYear] = useState('');
   const [sortOrder, setSortOrder] = useState('');
   const [filterPopupOpen, setFilterPopupOpen] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  // Removed unused state variable 'isMobileMenuOpen'
   const [lastSearchResults, setLastSearchResults] = useState([]); // Store last search results
   const location = useLocation();
   const navigate = useNavigate();
@@ -75,15 +75,24 @@ function Header() {
 
   // Close if clicking outside 
   const handleOutsideClick = useCallback((e) => {
+    const isFilterButton = e.target.closest('button')?.contains(document.querySelector('.fa-filter'));
+    const isSearchResult = e.target.closest('.search-result-item'); // Add this class to your Link
+    const isSearchInput = e.target === searchInputRef.current;
+    
     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-      setDropdownOpen(false); // Close dropdown if clicked outside
+      setDropdownOpen(false);
     }
-    if (filterPopupRef.current && !filterPopupRef.current.contains(e.target)) {
-      setFilterPopupOpen(false); // Close filter popup if clicked outside
+    if (filterPopupRef.current && !filterPopupRef.current.contains(e.target) && !isFilterButton) {
+      setFilterPopupOpen(false);
     }
-    if (searchContainerRef.current && !searchContainerRef.current.contains(e.target)) {
-      setLastSearchResults(filteredResults); // Save current results before hiding
-      setFilteredResults([]); // Hide search results
+    if (
+      searchContainerRef.current && 
+      !searchContainerRef.current.contains(e.target) &&
+      !isSearchResult &&
+      !isSearchInput
+    ) {
+      setLastSearchResults(filteredResults);
+      setFilteredResults([]);
     }
   }, [dropdownRef, filterPopupRef, searchContainerRef, filteredResults]);
 
@@ -216,7 +225,7 @@ function Header() {
     <nav className="relative w-full overflow-visible rounded-xl border border-blue-500/20 mb-8">
       {/* Animated Background */}
       <div className="absolute inset-0 w-full bg-gradient-to-r from-blue-950 via-blue-900 to-blue-950 backdrop-blur-md"></div>
-      
+
       {/* Floating Bubbles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute h-4 w-4 rounded-full bg-blue-400/10 animate-float top-4 left-[10%]"></div>
@@ -228,18 +237,33 @@ function Header() {
       </div>
 
       {/* Main Navbar Content */}
-      <div className="relative w-full px-2 sm:px-4 py-3"> {/* Adjusted padding for smaller screens */}
+      <div className="relative w-full px-2 sm:px-4 py-3">
+        {" "}
+        {/* Adjusted padding for smaller screens */}
         <div className="flex items-center justify-between w-full">
           {/* Logo */}
           <div className="flex items-center space-x-2 group">
             <Link to="/" className="flex items-center space-x-1">
-              <img src="/myicon.ico" alt="Site Icon" className="relative w-6 h-6 sm:w-8 sm:h-8" /> {/* Adjusted size */}
-              <span className="block text-lg sm:text-xl font-bold text-white">MovieScout</span> {/* Adjusted font size */}
+              <img
+                src="/myicon.ico"
+                alt="Site Icon"
+                className="relative w-6 h-6 sm:w-8 sm:h-8"
+              />{" "}
+              {/* Adjusted size */}
+              <span className="block text-lg sm:text-xl font-bold text-white">
+                MovieScout
+              </span>{" "}
+              {/* Adjusted font size */}
             </Link>
           </div>
 
           {/* Centered Search Bar and Categories */}
-          <div className="relative flex-1 ml-1 max-w-[46%] sm:max-w-md" ref={searchContainerRef}> {/* Adjusted max width */}
+          <div
+            className="relative flex-1 ml-1 max-w-[46%] sm:max-w-md"
+            ref={searchContainerRef}
+          >
+            {" "}
+            {/* Adjusted max width */}
             <div className="absolute inset-y-0 left-0 pl-2 sm:pl-3 flex items-center">
               <FontAwesomeIcon
                 icon={faSearch}
@@ -258,16 +282,19 @@ function Header() {
             />
             <button
               className="absolute right-2 top-1/2 transform -translate-y-1/2 text-blue-200 hover:text-white"
-              onClick={() => setFilterPopupOpen(!filterPopupOpen)}
+              onClick={(e) => {
+                e.stopPropagation(); // Stop event from bubbling
+                setFilterPopupOpen((prev) => !prev);
+              }}
             >
               <FontAwesomeIcon icon={faFilter} />
             </button>
           </div>
 
-
           {/* Right Side Buttons */}
-          <div className="flex items-center space-x-2 mt-0.5 ml-1 sm:space-x-4"> {/* Adjusted spacing */}
-
+          <div className="flex items-center space-x-2 mt-0.5 ml-1 sm:space-x-4">
+            {" "}
+            {/* Adjusted spacing */}
             {/* User Menu */}
             <div className="relative" ref={dropdownRef}>
               <button
@@ -275,19 +302,35 @@ function Header() {
                 onClick={() => setDropdownOpen(!dropdownOpen)}
               >
                 <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-400 rounded blur opacity-60 group-hover:opacity-100 transition duration-200"></div>
-                <div className="relative p-1 sm:p-2 bg-blue-950 rounded-full leading-none flex items-center"> {/* Adjusted padding */}
-                  <FontAwesomeIcon icon={faUser} className="w-4 h-4 sm:w-5 sm:h-5 text-blue-200 group-hover:text-white" /> {/* Adjusted size */}
-                  {user && <span className="ml-1 sm:ml-2 text-blue-200 group-hover:text-white text-sm sm:text-base">{user.name}</span>} {/* Adjusted spacing and font size */}
+                <div className="relative p-1 sm:p-2 bg-blue-950 rounded-full leading-none flex items-center">
+                  {" "}
+                  {/* Adjusted padding */}
+                  <FontAwesomeIcon
+                    icon={faUser}
+                    className="w-4 h-4 sm:w-5 sm:h-5 text-blue-200 group-hover:text-white"
+                  />{" "}
+                  {/* Adjusted size */}
+                  {user && (
+                    <span className="ml-1 sm:ml-2 text-blue-200 group-hover:text-white text-sm sm:text-base">
+                      {user.name}
+                    </span>
+                  )}{" "}
+                  {/* Adjusted spacing and font size */}
                 </div>
               </button>
 
               {dropdownOpen && (
-                <div className="fixed right-2 sm:right-4 top-16 bg-white text-gray-800 rounded shadow-lg w-40 sm:w-48 z-[1000]" ref={dropdownRef}> {/* Adjusted width */}
+                <div
+                  className="fixed right-2 sm:right-4 top-16 bg-white text-gray-800 rounded shadow-lg w-40 sm:w-48 z-[1000]"
+                  ref={dropdownRef}
+                >
+                  {" "}
+                  {/* Adjusted width */}
                   <ul className="py-2">
                     <li
                       className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                       onClick={() => {
-                        navigate('/userprofile'); // Navigate first
+                        navigate("/userprofile"); // Navigate first
                         setDropdownOpen(false); // Then close the dropdown
                       }}
                     >
@@ -307,7 +350,7 @@ function Header() {
                       <li
                         className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                         onClick={() => {
-                          navigate('/login'); // Navigate first
+                          navigate("/login"); // Navigate first
                           setDropdownOpen(false); // Then close the dropdown
                         }}
                       >
@@ -317,7 +360,7 @@ function Header() {
                     <li
                       className="px-4 py-2 hover:bg-gray-200 cursor-pointer"
                       onClick={() => {
-                        navigate('/signup'); // Navigate first
+                        navigate("/signup"); // Navigate first
                         setDropdownOpen(false); // Then close the dropdown
                       }}
                     >
@@ -327,64 +370,45 @@ function Header() {
                 </div>
               )}
             </div>
-
             {/* Mobile Menu Button */}
-            
           </div>
         </div>
-
-        {/* Mobile Menu Dropdown */}
-        {isMobileMenuOpen && (
-          <div className="mt-4 md:hidden bg-blue-900/90 backdrop-blur-sm rounded-lg border border-blue-500/30 animate-slide-down">
-            <div className="p-4 space-y-4">
-              {/* Search Bar */}
-              <div className="relative">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <FontAwesomeIcon icon={faSearch} className="text-blue-200" />
-                </div>
-                <input
-                  type="text"
-                  placeholder="Search movies..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2 bg-blue-950/50 border border-blue-500/30 rounded-lg text-white placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-                <button
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-blue-200 hover:text-white"
-                  onClick={() => setFilterPopupOpen(!filterPopupOpen)}
-                >
-                  <FontAwesomeIcon icon={faFilter} />
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Search Results (Mobile) */}
-        {filteredResults.length > 0 &&  (
+        {/* Search Results */}
+        {filteredResults.length > 0 && (
           <div
             className="absolute bg-white text-black p-2 rounded-md shadow-lg z-[1000] overflow-y-auto"
             style={{
-              top: window.innerWidth <= 640 ? '49px' : '61px',
-              left: window.innerWidth > 1400 ? '54.3%' : window.innerWidth <= 640 ? '63%' : '54.5%',
-              transform: 'translateX(-50%)',
-              width: window.innerWidth <= 640 ? '57%' : '462px', // Adjust width for screens smaller than 640px
-              maxHeight: '310px',
+              top: window.innerWidth <= 640 ? "49px" : "61px",
+              left:
+                window.innerWidth > 1400
+                  ? "54.3%"
+                  : window.innerWidth <= 640
+                  ? "63%"
+                  : "54.5%",
+              transform: "translateX(-50%)",
+              width: window.innerWidth <= 640 ? "57%" : "462px", // Adjust width for screens smaller than 640px
+              maxHeight: "310px",
             }}
           >
             {filteredResults.map((movie) => (
-              <Link 
-                to={`/movies/${movie.id}`} 
-                key={movie.id} 
-                className="flex items-center mb-2 hover:bg-gray-200 p-2 rounded"
-                onClick={() => {
-                  setIsMobileMenuOpen(false);
+              <Link
+                to={`/movies/${movie.id}`}
+                key={movie.id}
+                className="search-result-item flex items-center mb-2 hover:bg-gray-200 p-2 rounded"
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent event from bubbling up
+                  setFilteredResults([]); // Clear search results
+                  setFilterPopupOpen(false); // Close filter popup
                 }}
               >
                 <img
-                  src={movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : fallbackPoster}
+                  src={
+                    movie.poster_path
+                      ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
+                      : fallbackPoster
+                  }
                   alt={movie.title}
-                  style={{ width: '50px', height: '75px', marginRight: '10px' }}
+                  style={{ width: "50px", height: "75px", marginRight: "10px" }}
                 />
                 <div>
                   <h4>{movie.title}</h4>
@@ -392,23 +416,26 @@ function Header() {
                     <strong>Release Date:</strong> {movie.release_date}
                   </p>
                   <p className="text-base">
-                    <strong>Rating:</strong> {movie.vote_average.toFixed(1)} {/* Rounded to 1 decimal place */}
+                    <strong>Rating:</strong> {movie.vote_average.toFixed(1)}{" "}
+                    {/* Rounded to 1 decimal place */}
                   </p>
                 </div>
               </Link>
             ))}
           </div>
         )}
-
         {/* Filter Popup */}
         {filterPopupOpen && (
           <div
-          ref={filterPopupRef}
-          className="fixed top-[49px] right-[20px] sm:right-[100px] xl:right-[300px] bg-white text-gray-800 rounded shadow-lg w-48 p-4 z-[9999] border border-gray-800"
-          onClick={(e) => e.stopPropagation()}
-        >
-        
-            <div className="flex flex-col">
+            ref={filterPopupRef}
+            className="absolute top-[49px] right-2 sm:right-[100px] xl:right-[300px] 
+               bg-white text-gray-800 rounded shadow-lg 
+               w-[38vw] sm:w-[200px] 
+               p-2 sm:p-4 z-[9999] border border-gray-800
+               max-h-[300px] sm:max-h-none overflow-y-auto"
+               onClick={(e) => e.stopPropagation()}
+               >
+            <div className="flex flex-col text-xs sm:text-sm">
               <label className="mb-1">Rating (up to 10):</label>
               <input
                 type="number"
@@ -416,14 +443,14 @@ function Header() {
                 max="10"
                 value={selectedRating}
                 onChange={(e) => setSelectedRating(e.target.value)}
-                className="p-1 rounded border border-gray-300 mb-2"
+                className="p-1 sm:p-2 rounded border border-gray-300 mb-2 text-xs sm:text-sm"
               />
 
               <label className="mb-1">Sort Alphabetically:</label>
               <select
                 value={sortOrder}
                 onChange={(e) => setSortOrder(e.target.value)}
-                className="p-1 rounded border border-gray-300 mb-2"
+                className="p-1 sm:p-2 rounded border border-gray-300 mb-2 text-xs sm:text-sm"
               >
                 <option value="">Select</option>
                 <option value="A-Z">A-Z</option>
@@ -436,12 +463,12 @@ function Header() {
                 value={releaseYear}
                 onChange={(e) => setReleaseYear(e.target.value)}
                 placeholder="YYYY"
-                className="p-1 rounded border border-gray-300 mb-2"
+                className="p-1 sm:p-2 rounded border border-gray-300 mb-2 text-xs sm:text-sm"
               />
 
               <button
                 onClick={applyFilters}
-                className="bg-gray-800 text-white py-2 px-4 rounded-full font-bold shadow-lg hover:bg-gray-700 transition-all duration-300"
+                className="bg-gray-800 text-white py-1 px-2 sm:py-2 sm:px-4 rounded-full font-semibold shadow-lg hover:bg-gray-700 transition-all duration-300 text-xs sm:text-sm"
               >
                 Apply Filters
               </button>
