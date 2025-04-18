@@ -72,8 +72,8 @@ function HomePage() {
         </div>
         <div className="carousel-container mx-auto rounded-lg overflow-hidden shadow-lg bg-black p-4"
           style={{
-            maxWidth: '90%', // Adjust max width for all screens
-            width: '70%', // Reduce width for large screens
+            maxWidth: '400px', // Restrict max width to 400px
+            width: '60%', // Ensure it adjusts to smaller screens
             maxHeight: '500px', // Set a maximum height for larger screens
           }}
         >
@@ -85,7 +85,7 @@ function HomePage() {
               autoPlay
               showStatus={false}
               centerMode
-              centerSlidePercentage={window.innerWidth < 640 ? 100 : window.innerWidth < 1024 ? 50 : 33.33} // Adjust visible cards based on screen size
+              centerSlidePercentage={100} // Show one card at a time
             >
               {trendingMovies.map((movie) => (
                 <Link to={`/movies/${movie.id}`} key={movie.id} className="block">
