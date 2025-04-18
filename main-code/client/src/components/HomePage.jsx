@@ -66,37 +66,51 @@ function HomePage() {
       {/* Trending Movies Section */}
       <div className="mt-8">
         <div className="flex justify-center">
-          <h2 className="text-2xl font-bold text-center mb-4 bg-gray-900 text-white py-2 px-4 border-2 border-black rounded-lg shadow-lg font-header">
+          <h2 className="text-xl sm:text-2xl font-bold text-center mb-4 bg-gray-900 text-white py-2 px-4 border-2 border-black rounded-lg shadow-lg font-header">
             Trending
           </h2>
         </div>
-        <div className="carousel-container" style={{ maxWidth: '500px', margin: '0 auto', borderRadius: '8px', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.5)', backgroundColor: 'black', padding: '10px' }}>
+        <div className="carousel-container mx-auto rounded-lg overflow-hidden shadow-lg bg-black p-4"
+          style={{
+            maxWidth: '90%', // Adjust max width for all screens
+            width: '70%', // Reduce width for large screens
+            maxHeight: '500px', // Set a maximum height for larger screens
+          }}
+        >
           {trendingMovies.length > 0 ? (
-            <Carousel showThumbs={true} infiniteLoop useKeyboardArrows autoPlay showStatus={true}>
+            <Carousel
+              showThumbs={false}
+              infiniteLoop
+              useKeyboardArrows
+              autoPlay
+              showStatus={false}
+              centerMode
+              centerSlidePercentage={window.innerWidth < 640 ? 100 : window.innerWidth < 1024 ? 50 : 33.33} // Adjust visible cards based on screen size
+            >
               {trendingMovies.map((movie) => (
                 <Link to={`/movies/${movie.id}`} key={movie.id} className="block">
                   <img
                     src={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : fallbackPoster}
                     alt={movie.title}
-                    style={{ width: '100%', height: 'auto', maxHeight: '300px' }}
+                    className="w-full h-auto max-h-[100px] sm:max-h-[300px] object-cover" // Reduce image height for smaller screens
                   />
-                  <div className="p-4 bg-gray-900 text-white">
-                    <h2 className="text-md font-bold">{movie.title}</h2>
-                    <p><strong>Release Date:</strong> {movie.release_date}</p>
+                  <div className="p-2 sm:p-4 bg-gray-900 text-white">
+                    <h2 className="text-sm sm:text-md font-bold">{movie.title}</h2> {/* Smaller title for smaller screens */}
+                    <p className="text-xs sm:text-sm">
+                      <strong>Release Date:</strong> {movie.release_date}
+                    </p>
                     <p
-                      className="mt-2"
+                      className="mt-1 sm:mt-2 text-xs sm:text-sm"
                       style={{
                         display: '-webkit-box',
                         WebkitBoxOrient: 'vertical',
-                        WebkitLineClamp: 3, // Limit to 3 lines
+                        WebkitLineClamp: 2, // Limit to 2 lines for smaller screens
                         overflow: 'hidden',
                         textOverflow: 'ellipsis',
                       }}
                     >
                       {movie.overview}
                     </p>
-
-
                   </div>
                 </Link>
               ))}
@@ -115,7 +129,7 @@ function HomePage() {
       {/* New Releases Section - Cards */}
       <div className="mt-8 mb-12 flex flex-col items-center">
         <div className="mt-8 mb-8 flex justify-center">
-          <h2 className="text-2xl font-bold text-center bg-red-600 text-white py-2 px-4 border-2 border-black rounded-lg shadow-lg">
+          <h2 className="text-xl sm:text-2xl font-bold text-center bg-red-600 text-white py-2 px-4 border-2 border-black rounded-lg shadow-lg">
             New Releases
           </h2>
         </div>
@@ -125,24 +139,24 @@ function HomePage() {
               <Link
                 to={`/movies/${movie.id}`}
                 key={movie.id}
-                className="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl"
-                style={{ width: '250px' }}
+                className="bg-white rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-lg"
+                style={{ width: '200px' }} // Adjust card width to be smaller
               >
                 {/* New! Label */}
-                <div className="bg-red-600 text-white text-sm font-bold p-2 text-center">New!</div>
+                <div className="bg-red-600 text-white text-xs font-bold p-1 text-center">New!</div>
                 {/* Movie Poster */}
                 <img
                   src={movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : fallbackPoster}
                   alt={movie.title}
-                  style={{ width: '100%', height: 'auto', maxHeight: '350px' }}
+                  className="w-full h-auto max-h-[200px] object-cover" // Reduce image height
                 />
                 {/* Movie Details */}
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold mb-2">{movie.title}</h3>
-                  <p className="text-gray-600 text-sm">
+                <div className="p-2">
+                  <h3 className="text-sm font-semibold mb-1">{movie.title}</h3> {/* Smaller title */}
+                  <p className="text-gray-600 text-xs">
                     <strong>Category:</strong> {movie.genre_ids.length > 0 ? getGenreNames(movie.genre_ids) : 'Unknown'}
                   </p>
-                  <p className="text-gray-600 text-sm mt-1"><strong>Release Date:</strong> {movie.release_date}</p>
+                  <p className="text-gray-600 text-xs mt-1"><strong>Release Date:</strong> {movie.release_date}</p>
                 </div>
               </Link>
             ))
@@ -155,9 +169,9 @@ function HomePage() {
         {newReleases.length > 8 && (
           <button
             onClick={() => setShowMoreNewReleases(!showMoreNewReleases)}
-            className="relative group mt-6 px-6 py-3 rounded-xl bg-blue-950 text-blue-200 text-lg font-extrabold hover:text-white transition-all duration-200"
+            className="relative group mt-4 px-4 py-2 rounded-lg bg-blue-950 text-blue-200 text-sm font-bold hover:text-white transition-all duration-200"
           >
-            <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-xl blur opacity-60 group-hover:opacity-100 transition duration-200"></div>
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-lg blur opacity-60 group-hover:opacity-100 transition duration-200"></div>
             <span className="relative">{showMoreNewReleases ? 'See Less' : 'See More'}</span>
           </button>
         )}
@@ -172,7 +186,7 @@ function HomePage() {
       {/* Top Rated Section - Cards */}
       <div className="mt-8 mb-12 flex flex-col items-center">
         <div className="mt-8 mb-8 flex justify-center ">
-          <h2 className="text-2xl font-bold text-center bg-yellow-400 text-white py-2 px-4 border-2 border-black rounded-lg shadow-lg">
+          <h2 className="text-xl sm:text-2xl font-bold text-center bg-yellow-400 text-white py-2 px-4 border-2 border-black rounded-lg shadow-lg">
             Top Rated
           </h2>
         </div>
@@ -229,7 +243,7 @@ function HomePage() {
       {/* Upcoming Section - Cards with Alert */}
       <div className="mt-8 mb-12 flex flex-col items-center">
         <div className="mt-8 mb-4 flex justify-center">
-          <h2 className="text-2xl font-bold text-center bg-blue-800 text-white py-2 px-4 border-2 border-black rounded-lg shadow-lg">
+          <h2 className="text-xl sm:text-2xl font-bold text-center bg-blue-800 text-white py-2 px-4 border-2 border-black rounded-lg shadow-lg">
             Upcoming
           </h2>
         </div>

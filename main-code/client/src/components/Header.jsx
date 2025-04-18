@@ -390,37 +390,40 @@ function Header() {
               maxHeight: "310px",
             }}
           >
-            {filteredResults.map((movie) => (
-              <Link
-                to={`/movies/${movie.id}`}
-                key={movie.id}
-                className="search-result-item flex items-center mb-2 hover:bg-gray-200 p-2 rounded"
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent event from bubbling up
-                  setFilteredResults([]); // Clear search results
-                  setFilterPopupOpen(false); // Close filter popup
-                }}
-              >
-                <img
-                  src={
-                    movie.poster_path
-                      ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
-                      : fallbackPoster
-                  }
-                  alt={movie.title}
-                  style={{ width: "50px", height: "75px", marginRight: "10px" }}
-                />
-                <div>
-                  <h4>{movie.title}</h4>
-                  <p className="text-base">
-                    <strong>Release Date:</strong> {movie.release_date}
-                  </p>
-                  <p className="text-base">
-                    <strong>Rating:</strong> {movie.vote_average.toFixed(1)}{" "}
-                    {/* Rounded to 1 decimal place */}
-                  </p>
-                </div>
-              </Link>
+            {filteredResults.map((movie, index) => (
+              <div key={movie.id}>
+                <Link
+                  to={`/movies/${movie.id}`}
+                  className="search-result-item flex flex-col sm:flex-row items-center mb-2 hover:bg-gray-200 p-2 rounded" // Use flex-col for smaller devices
+                  onClick={(e) => {
+                    e.stopPropagation(); // Prevent event from bubbling up
+                    setFilteredResults([]); // Clear search results
+                    setFilterPopupOpen(false); // Close filter popup
+                  }}
+                >
+                  <img
+                    src={
+                      movie.poster_path
+                        ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
+                        : fallbackPoster
+                    }
+                    alt={movie.title}
+                    className="w-20 h-30 sm:w-12 sm:h-18 mb-2 sm:mb-0 sm:mr-4" // Adjust size and spacing for smaller devices
+                  />
+                  <div className="text-center sm:text-left">
+                    <h4>{movie.title}</h4>
+                    <p className="text-base">
+                      <strong>Release Date:</strong> {movie.release_date}
+                    </p>
+                    <p className="text-base">
+                      <strong>Rating:</strong> {movie.vote_average.toFixed(1)} {/* Rounded to 1 decimal place */}
+                    </p>
+                  </div>
+                </Link>
+                {index < filteredResults.length - 1 && (
+                  <hr className="border-t border-gray-300 my-2" /> // Add a separator between movies
+                )}
+              </div>
             ))}
           </div>
         )}
