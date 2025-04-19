@@ -15,6 +15,7 @@ function HomePage() {
   const [showMoreUpcoming, setShowMoreUpcoming] = useState(false);
   const [genres, setGenres] = useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
@@ -67,6 +68,32 @@ function HomePage() {
       return genre ? genre.name : 'Unknown';
     }).join(', ');
   };
+
+  const handleToggle = (section) => {
+    if (section === 'newReleases') {
+      if (showMoreNewReleases) {
+        window.scrollTo(0, scrollPosition);
+      } else {
+        setScrollPosition(window.scrollY);
+      }
+      setShowMoreNewReleases(!showMoreNewReleases);
+    } else if (section === 'topRated') {
+      if (showMoreTopRated) {
+        window.scrollTo(0, scrollPosition);
+      } else {
+        setScrollPosition(window.scrollY);
+      }
+      setShowMoreTopRated(!showMoreTopRated);
+    } else if (section === 'upcoming') {
+      if (showMoreUpcoming) {
+        window.scrollTo(0, scrollPosition);
+      } else {
+        setScrollPosition(window.scrollY);
+      }
+      setShowMoreUpcoming(!showMoreUpcoming);
+    }
+  };
+
   return (
     <div>
       {/* Trending Movies Section */}
@@ -177,7 +204,7 @@ function HomePage() {
         {/* See More Button for New Releases */}
         {newReleases.length > 8 && (
           <button
-            onClick={() => setShowMoreNewReleases(!showMoreNewReleases)}
+            onClick={() => handleToggle('newReleases')}
             className={`relative group mt-6 ${
               windowWidth >= 768
                 ? 'px-6 py-3 rounded-xl bg-blue-950 text-blue-200 text-lg font-extrabold'
@@ -245,7 +272,7 @@ function HomePage() {
         {/* See More Button for Top Rated */}
         {topRated.length > 8 && (
           <button
-            onClick={() => setShowMoreTopRated(!showMoreTopRated)}
+            onClick={() => handleToggle('topRated')}
             className={`relative group mt-6 ${
               windowWidth >= 768
                 ? 'px-6 py-3 rounded-xl bg-blue-950 text-blue-200 text-lg font-extrabold'
@@ -318,7 +345,7 @@ function HomePage() {
         {/* See More Button for Upcoming */}
         {upcoming.length > 8 && (
           <button
-            onClick={() => setShowMoreUpcoming(!showMoreUpcoming)}
+            onClick={() => handleToggle('upcoming')}
             className={`relative group mt-6 ${
               windowWidth >= 768
                 ? 'px-6 py-3 rounded-xl bg-blue-950 text-blue-200 text-lg font-extrabold'
