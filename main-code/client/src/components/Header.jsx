@@ -431,7 +431,7 @@ function Header() {
                         textTransform: "uppercase",
                         letterSpacing: "1px",
                         marginBottom: "8px",
-                        marginRight: "10px",
+                        marginRight: "8px",
                       }}
                     >
                     🎬 {movie.title}
