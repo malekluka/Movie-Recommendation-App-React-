@@ -404,53 +404,54 @@ function Header() {
                   }}
                 >
                   <img
-  src={
-    movie.poster_path
-      ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
-      : fallbackPoster
-  }
-  alt={movie.title}
-  className="w-20 h-30 mb-2 mr-4" // Adjust size and spacing
-  style={{
-    width: window.innerWidth <= 480 ? '48px' : '80px', // Adjust width for mobile
-    height: window.innerWidth <= 480 ? '72px' : '120px', // Adjust height for mobile
-    marginBottom: window.innerWidth <= 480 ? '8px' : '16px',
-  }}
-/>
-<div
-  className="text-center"
-  style={{
-    textAlign: window.innerWidth <= 480 ? 'center' : 'left', // Center text on mobile
-  }}
->
-  <h4
-    style={{
-      fontSize: window.innerWidth <= 480 ? '12px' : '18px',
-    fontWeight: '800',
-    color: '#B8860B', // IMDb-style gold (great contrast on black)
-    textTransform: 'uppercase',
-    letterSpacing: '1px',
-    marginBottom: '8px',
-      marginRight:'14px',
-    }}
-  >
-   🎬 {movie.title}
-  </h4>
-  <p
-    style={{
-      fontSize: window.innerWidth <= 480 ? '10px' : '14px', // Adjust font size for mobile
-    }}
-  >
-    <strong>Release Date:</strong> {movie.release_date}
-  </p>
-  <p
-    style={{
-      fontSize: window.innerWidth <= 480 ? '10px' : '14px', // Adjust font size for mobile
-    }}
-  >
-    <strong>Rating:</strong> {movie.vote_average.toFixed(1)} {/* Rounded to 1 decimal place */}
-  </p>
-</div>
+                    src={
+                      movie.poster_path
+                        ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
+                        : fallbackPoster
+                    }
+                    alt={movie.title}
+                    className="w-20 h-30 mb-2 mr-4" // Adjust size and spacing
+                    style={{
+                      width: window.innerWidth <= 480 ? "48px" : "80px", // Adjust width for mobile
+                      height: window.innerWidth <= 480 ? "72px" : "120px", // Adjust height for mobile
+                      marginBottom: window.innerWidth <= 480 ? "8px" : "16px",
+                    }}
+                  />
+                  <div
+                    className="text-center"
+                    style={{
+                      textAlign: window.innerWidth <= 480 ? "center" : "left", // Center text on mobile
+                    }}
+                  >
+                    <h4
+                      style={{
+                        fontSize: window.innerWidth <= 480 ? "12px" : "18px",
+                        fontWeight: "800",
+                        color: "#B8860B",
+                        textTransform: "uppercase",
+                        letterSpacing: "1px",
+                        marginBottom: "8px",
+                        marginRight: "10px",
+                      }}
+                    >
+                      🎬 {movie.title}
+                    </h4>
+                    <p
+                      style={{
+                        fontSize: window.innerWidth <= 480 ? "10px" : "14px", // Adjust font size for mobile
+                      }}
+                    >
+                      <strong>Release Date:</strong> {movie.release_date}
+                    </p>
+                    <p
+                      style={{
+                        fontSize: window.innerWidth <= 480 ? "10px" : "14px", // Adjust font size for mobile
+                      }}
+                    >
+                      <strong>Rating:</strong> {movie.vote_average.toFixed(1)}{" "}
+                      {/* Rounded to 1 decimal place */}
+                    </p>
+                  </div>
                 </Link>
                 {index < filteredResults.length - 1 && (
                   <hr className="border-t border-gray-300 my-2" /> // Add a separator between movies
@@ -468,8 +469,8 @@ function Header() {
                w-[38vw] sm:w-[200px] 
                p-2 sm:p-4 z-[9999] border border-gray-800
                max-h-[300px] sm:max-h-none overflow-y-auto"
-               onClick={(e) => e.stopPropagation()}
-               >
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex flex-col text-xs sm:text-sm">
               <label className="mb-1">Rating (up to 10):</label>
               <input
