@@ -78,6 +78,7 @@ function Header() {
     const isFilterButton = e.target.closest('button')?.contains(document.querySelector('.fa-filter'));
     const isSearchResult = e.target.closest('.search-result-item'); // Add this class to your Link
     const isSearchInput = e.target === searchInputRef.current;
+    const isSearchResultsContainer = e.target.closest('.search-results-container'); // Add this line
     
     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
       setDropdownOpen(false);
@@ -89,7 +90,8 @@ function Header() {
       searchContainerRef.current && 
       !searchContainerRef.current.contains(e.target) &&
       !isSearchResult &&
-      !isSearchInput
+      !isSearchInput &&
+      !isSearchResultsContainer 
     ) {
       setLastSearchResults(filteredResults);
       setFilteredResults([]);
@@ -376,7 +378,7 @@ function Header() {
         {/* Search Results */}
         {filteredResults.length > 0 && (
           <div
-            className="absolute bg-white text-black p-2 rounded-md shadow-lg z-[1000] overflow-y-auto"
+            className="search-results-container absolute bg-white text-black p-2 rounded-md shadow-lg z-[1000] overflow-y-auto"
             style={{
               top: window.innerWidth <= 640 ? "49px" : "61px",
               left:
@@ -386,7 +388,7 @@ function Header() {
                   ? "63%"
                   : "54.5%",
               transform: "translateX(-50%)",
-              width: window.innerWidth <= 640 ? "57%" : "462px", // Adjust width for screens smaller than 640px
+              width: window.innerWidth <= 640 ? "50%" : "462px", // Adjust width for screens smaller than 640px
               maxHeight: "310px",
             }}
           >
@@ -402,23 +404,53 @@ function Header() {
                   }}
                 >
                   <img
-                    src={
-                      movie.poster_path
-                        ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
-                        : fallbackPoster
-                    }
-                    alt={movie.title}
-                    className="w-20 h-30 sm:w-12 sm:h-18 mb-2 sm:mb-0 sm:mr-4" // Adjust size and spacing for smaller devices
-                  />
-                  <div className="text-center sm:text-left">
-                    <h4>{movie.title}</h4>
-                    <p className="text-base">
-                      <strong>Release Date:</strong> {movie.release_date}
-                    </p>
-                    <p className="text-base">
-                      <strong>Rating:</strong> {movie.vote_average.toFixed(1)} {/* Rounded to 1 decimal place */}
-                    </p>
-                  </div>
+  src={
+    movie.poster_path
+      ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
+      : fallbackPoster
+  }
+  alt={movie.title}
+  className="w-20 h-30 mb-2 mr-4" // Adjust size and spacing
+  style={{
+    width: window.innerWidth <= 480 ? '48px' : '80px', // Adjust width for mobile
+    height: window.innerWidth <= 480 ? '72px' : '120px', // Adjust height for mobile
+    marginBottom: window.innerWidth <= 480 ? '8px' : '16px',
+  }}
+/>
+<div
+  className="text-center"
+  style={{
+    textAlign: window.innerWidth <= 480 ? 'center' : 'left', // Center text on mobile
+  }}
+>
+  <h4
+    style={{
+      fontSize: window.innerWidth <= 480 ? '12px' : '18px',
+    fontWeight: '800',
+    color: '#B8860B', // IMDb-style gold (great contrast on black)
+    textTransform: 'uppercase',
+    letterSpacing: '1px',
+    marginBottom: '8px',
+      marginRight:'14px',
+    }}
+  >
+   🎬 {movie.title}
+  </h4>
+  <p
+    style={{
+      fontSize: window.innerWidth <= 480 ? '10px' : '14px', // Adjust font size for mobile
+    }}
+  >
+    <strong>Release Date:</strong> {movie.release_date}
+  </p>
+  <p
+    style={{
+      fontSize: window.innerWidth <= 480 ? '10px' : '14px', // Adjust font size for mobile
+    }}
+  >
+    <strong>Rating:</strong> {movie.vote_average.toFixed(1)} {/* Rounded to 1 decimal place */}
+  </p>
+</div>
                 </Link>
                 {index < filteredResults.length - 1 && (
                   <hr className="border-t border-gray-300 my-2" /> // Add a separator between movies
