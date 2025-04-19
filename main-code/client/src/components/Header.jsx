@@ -160,7 +160,7 @@ function Header() {
   };
 
   const filterContent = useCallback((movie) => {
-    const restrictedKeywords = ['sex', 'explicit', 'adult', 'stepmom']; // Add more keywords as needed
+    const restrictedKeywords = ['sex', 'explicit', 'adult', 'stepmom', 'erotic']; // Add more keywords as needed
     const normalizeText = (text) => text?.toLowerCase() || ''; // Normalize text for comparison
     const hasRestrictedContent = movie.adult || // Check the 'adult' property
       restrictedKeywords.some(keyword =>
@@ -429,7 +429,7 @@ function Header() {
                         fontWeight: "800",
                         color: "#B8860B",
                         textTransform: "uppercase",
-                        letterSpacing: "1px",
+                        letterSpacing: "0.5px",
                         marginBottom: "8px",
                         marginRight: "8px",
                       }}
