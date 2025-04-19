@@ -434,7 +434,7 @@ function Header() {
                         marginRight: "10px",
                       }}
                     >
-                      🎬 {movie.title}
+                    🎬 {movie.title}
                     </h4>
                     <p
                       style={{
