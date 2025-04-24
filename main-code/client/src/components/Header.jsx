@@ -1,9 +1,8 @@
 import { useState, useEffect, useContext, useRef, useCallback, useMemo } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilter, faUser, faSearch} from '@fortawesome/free-solid-svg-icons';
+import { faFilter, faUser , faSearch} from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import fallbackPoster from '../assets/MovieDefaultImg.jpg';
 import { UserContext } from '../App';
 
@@ -34,7 +33,6 @@ function Header() {
   const [sortOrder, setSortOrder] = useState('');
   const [filterPopupOpen, setFilterPopupOpen] = useState(false);
   // Removed unused state variable 'isMobileMenuOpen'
-  const [lastSearchResults, setLastSearchResults] = useState([]); // Store last search results
   const location = useLocation();
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
@@ -44,7 +42,7 @@ function Header() {
   const searchInputRef = useRef(null); // Ref for the search input
 
   const cache = useMemo(() => new Map(), []); // Cache to store fetched results
-  const debouncedQuery = useDebounce(searchQuery, 500); // Debounce delay of 500ms
+  const debouncedQuery = useDebounce(searchQuery, 1000); // Debounce delay of 500ms
 
   // Reset search results when the route changes
   useEffect(() => {
@@ -79,7 +77,7 @@ function Header() {
     const isSearchResult = e.target.closest('.search-result-item'); // Add this class to your Link
     const isSearchInput = e.target === searchInputRef.current;
     const isSearchResultsContainer = e.target.closest('.search-results-container'); // Add this line
-    
+
     if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
       setDropdownOpen(false);
     }
@@ -87,16 +85,16 @@ function Header() {
       setFilterPopupOpen(false);
     }
     if (
-      searchContainerRef.current && 
+      searchContainerRef.current &&
       !searchContainerRef.current.contains(e.target) &&
       !isSearchResult &&
       !isSearchInput &&
-      !isSearchResultsContainer 
+      !isSearchResultsContainer &&
+      !(filterPopupRef.current && filterPopupRef.current.contains(e.target))
     ) {
-      setLastSearchResults(filteredResults);
       setFilteredResults([]);
-    }
-  }, [dropdownRef, filterPopupRef, searchContainerRef, filteredResults]);
+    } 
+}, [dropdownRef, filterPopupRef, searchContainerRef]);
 
   useEffect(() => {
     document.addEventListener('mousedown', handleOutsideClick);
@@ -105,62 +103,51 @@ function Header() {
     };
   }, [handleOutsideClick]);
 
-  // Restore search results when clicking back inside the search bar
-  const handleSearchFocus = () => {
-    if (lastSearchResults.length > 0) {
-      setFilteredResults(lastSearchResults); // Restore previous results
-    }
-  };
-
   // Apply filters to the movie list
-  const applyFilters = async () => {
+  const applyFilters = () => {
+    const cacheKey = `search:${searchQuery.trim().toLowerCase()}`;
     let results = [];
-
-    // Fetch search results if there's a query
-    if (searchQuery.trim()) {
-      try {
-        const response = await axios.get('https://api.themoviedb.org/3/search/movie', {
-          params: {
-            api_key: '28a9d4a5fcb0241d7210c3f1d17f63f4',
-            language: 'en-US',
-            query: searchQuery,
-          },
-        });
-        results = response.data.results;
-      } catch (error) {
-        console.error('Error fetching search results:', error);
-        results = [];
-      }
+  
+    // Use cached results if a search was made and it's in the cache
+    if (searchQuery.trim() !== '' && cache.has(cacheKey)) {
+      results = [...cache.get(cacheKey)];
     } else {
-      results = [...allMovies]; // Use all movies if no search query
+      // Use allMovies if no search query
+      results = [...allMovies];
     }
-
+  
     // Apply rating filter
     if (selectedRating) {
-      const ratingFloor = Math.floor(parseFloat(selectedRating));
+      const ratingFloor = Math.floor(parseFloat(selectedRating)) || 0;
       const ratingCeil = ratingFloor + 1;
-      results = results.filter(movie => movie.vote_average >= ratingFloor && movie.vote_average < ratingCeil);
+      results = results.filter(movie =>
+        movie.vote_average >= ratingFloor && movie.vote_average < ratingCeil
+      );
     }
-
+  
     // Apply release year filter
     if (releaseYear) {
-      results = results.filter(movie => movie.release_date?.startsWith(releaseYear));
+      results = results.filter(movie =>
+        movie.release_date?.startsWith(releaseYear)
+      );
     }
-
+  
     // Apply sort order
     if (sortOrder === 'A-Z') {
       results.sort((a, b) => a.title.localeCompare(b.title));
     } else if (sortOrder === 'Z-A') {
       results.sort((a, b) => b.title.localeCompare(a.title));
     }
-
-    // Ensure filtered results are updated
-    setFilteredResults(results); // Update the filtered results
-    setFilterPopupOpen(false); // Close the filter popup
+  
+    setFilteredResults(results);
+    setFilterPopupOpen(false);
   };
+  
+  
+  
 
   const filterContent = useCallback((movie) => {
-    const restrictedKeywords = ['sex', 'explicit', 'adult', 'stepmom', 'erotic']; // Add more keywords as needed
+    const restrictedKeywords = ['sex', 'explicit', 'adult', 'stepmom', 'erotic', 'sister-in-law', 'urologists', 'sexy', 'youthful']; // Add more keywords as needed
     const normalizeText = (text) => text?.toLowerCase() || ''; // Normalize text for comparison
     const hasRestrictedContent = movie.adult || // Check the 'adult' property
       restrictedKeywords.some(keyword =>
@@ -176,8 +163,10 @@ function Header() {
       setFilteredResults([]);
       return;
     }
+    
+
   
-    const cacheKey = `search:${query}`;
+    const cacheKey = `search:${query.trim().toLowerCase()}`;
   
     // Check if the query exists in cache
     if (cache.has(cacheKey)) {
@@ -204,7 +193,7 @@ function Header() {
       // Cache the search results
       cache.set(cacheKey, searchResults);
       setFilteredResults(searchResults);
-    } catch (error) {
+        } catch (error) {
       console.error('Error searching for movies:', error);
     }
   }, [cache, filterContent]);
@@ -278,7 +267,12 @@ function Header() {
               placeholder="Search movies..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              onFocus={handleSearchFocus} // Restore results on focus
+              onClick={() => {
+                const cacheKey = `search:${searchQuery.trim().toLowerCase()}`;
+                if (cache.has(cacheKey)) {
+                  setFilteredResults(cache.get(cacheKey));
+                }
+              }}
               ref={searchInputRef} // Attach the ref to the input
               className="w-full pl-8 sm:pl-10 pr-3 sm:pr-4 py-1 sm:py-2 bg-blue-950/50 border border-blue-500/30 rounded-lg text-white placeholder-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base" // Adjusted padding and font size
             />
@@ -425,7 +419,7 @@ function Header() {
                   >
                     <h4
                       style={{
-                        fontSize: window.innerWidth <= 480 ? "12px" : "18px",
+                        fontSize: window.innerWidth <= 480 ? "12px" : "16px",
                         fontWeight: "800",
                         color: "#B8860B",
                         textTransform: "uppercase",
@@ -460,6 +454,7 @@ function Header() {
             ))}
           </div>
         )}
+
         {/* Filter Popup */}
         {filterPopupOpen && (
           <div
@@ -495,7 +490,7 @@ function Header() {
 
               <label className="mb-1">Release Year:</label>
               <input
-                type="text"
+                type="number"
                 value={releaseYear}
                 onChange={(e) => setReleaseYear(e.target.value)}
                 placeholder="YYYY"

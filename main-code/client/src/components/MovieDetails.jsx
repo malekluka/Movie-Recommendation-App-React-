@@ -92,7 +92,7 @@ const MovieDetails = () => {
           <div className="md:w-3/4 mb-4 md:mr-4">
             <div className="mb-8">
               <h1 className="text-4xl font-bold mb-6">
-                {movie.title} {trailer ? "Trailer" : "Poster"} :
+                {movie.title} { trailer ? "Trailer" : "Poster"} :
               </h1>
               <div className="flex flex-col mb-4">
               {trailer ? (
@@ -105,13 +105,13 @@ const MovieDetails = () => {
                 frameBorder="0"
                 allowFullScreen
                 className="rounded-lg"
-              ></iframe>
+              />
             </div>
           ) : (
             <div className="mb-4">
               <img
                 src={movie.poster_path ? `https://image.tmdb.org/t/p/original/${movie.poster_path}` : MovieDefaultImg}
-                alt={movie.title || "Default Poster"}
+                alt={`${movie.title} Poster`}
                 className="w-4/5 h-[400px] rounded-lg" // Matches trailer size
               />
             </div>
