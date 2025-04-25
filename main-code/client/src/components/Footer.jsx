@@ -1,3 +1,6 @@
+import TMDBLogo from '../assets/TMDB-logo.svg';
+
+
 function Footer() {
   return (
     <footer className="relative overflow-visible rounded-xl border border-blue-500/20 mt-8">
@@ -15,11 +18,32 @@ function Footer() {
       </div>
 
       {/* Footer Content */}
-      <div className="relative px-4 sm:px-8 py-4 text-center">
-        <p className="text-white text-sm sm:text-base font-medium">
+      <div className="relative px-4 sm:px-8 py-4 flex justify-between items-center">
+        {/* Left Section: All Rights Reserved */}
+        <p className="text-white sm:text-sm font-medium">
           © 2024 MovieScout. All rights reserved.
         </p>
-      </div>
+
+        {/* TMDB Attribution */}
+        <div className="flex flex-col sm:flex-row items-center justify-center sm:space-x-2 text-center sm:text-left">
+  <p className="text-sm text-blue-300">
+    This product uses the TMDB API but is not endorsed or certified by TMDB.
+  </p>
+  <a
+    href="https://www.themoviedb.org/"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-block"
+  >
+    <img
+      src={TMDBLogo}
+      alt="TMDB Logo"
+      className="sm:h-6 w-auto"
+    />
+  </a>
+</div>
+  
+        </div>
     </footer>
   );
 }
