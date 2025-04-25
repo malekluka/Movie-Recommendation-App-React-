@@ -6,12 +6,17 @@ export default {
   theme: {
     extend: {
       animation: {
-        float: 'float 4s ease-in-out infinite',
+        fadeIn: 'fadeIn 1.5s ease-in-out',
+        slideIn: 'slideIn 1.5s ease-in-out',
       },
       keyframes: {
-        float: {
-          '0%, 100%': { transform: 'translateY(15px)' },
-          '50%': { transform: 'translateY(-10px)' },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
+        slideIn: {
+          '0%': { transform: 'translateX(-100%)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
         },
       },
     },

@@ -13,19 +13,30 @@ const MovieDetails = () => {
   const [visibleMoviesCount, setVisibleMoviesCount] = useState(3); // Number of movies to show initially
   const [genres, setGenres] = useState([]); // Store all genres
 
-  const API_KEY = '28a9d4a5fcb0241d7210c3f1d17f63f4';
+  const API_KEY = import.meta.env.MY_TMDB_API_KEY
+;
 
-  const fetchGenres = async () => {
+  const fetchTrailer = useCallback(async (id) => {
     try {
-      const response = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}`);
+      const response = await fetch(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${API_KEY}`);
       const data = await response.json();
-      setGenres(data.genres); // Save the genres in state
+      const trailerVideo = data.results.find(video => video.type === 'Trailer');
+      setTrailer(trailerVideo);
     } catch (err) {
-      console.error('Error fetching genres:', err);
+      console.error('Error fetching trailer:', err);
     }
-  };
- 
-  
+  }, [API_KEY]);
+
+  const fetchRelatedMovies = useCallback(async (id) => {
+    try {
+      const response = await fetch(`https://api.themoviedb.org/3/movie/${id}/similar?api_key=${API_KEY}`);
+      const data = await response.json();
+      setRelatedMovies(data.results);
+    } catch (err) {
+      console.error('Error fetching related movies:', err);
+    }
+  }, [API_KEY]);
+
   const fetchMovieDetails = useCallback(async () => {
     try {
       setLoading(true);
@@ -39,41 +50,30 @@ const MovieDetails = () => {
       setError(err.message);
       setLoading(false);
     }
-  }, [movieId, API_KEY]);
+  }, [movieId, API_KEY, fetchTrailer, fetchRelatedMovies]);
 
-  const fetchTrailer = async (id) => {
+  const fetchGenres = useCallback(async () => {
     try {
-      const response = await fetch(`https://api.themoviedb.org/3/movie/${id}/videos?api_key=${API_KEY}`);
+      const response = await fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}`);
       const data = await response.json();
-      const trailerVideo = data.results.find(video => video.type === 'Trailer');
-      setTrailer(trailerVideo);
+      setGenres(data.genres); // Save the genres in state
     } catch (err) {
-      console.error('Error fetching trailer:', err);
+      console.error('Error fetching genres:', err);
     }
-  };
-
-  const fetchRelatedMovies = async (id) => {
-    try {
-      const response = await fetch(`https://api.themoviedb.org/3/movie/${id}/similar?api_key=${API_KEY}`);
-      const data = await response.json();
-      setRelatedMovies(data.results);
-    } catch (err) {
-      console.error('Error fetching related movies:', err);
-    }
-  };
+  }, [API_KEY]);
 
   const handleSeeMore = () => {
     setVisibleMoviesCount(prevCount => Math.min(prevCount + 3, relatedMovies.length)); // Show 5 more movies
   };
 
   const handleSeeLess = () => {
-    setVisibleMoviesCount(3); // Reset to show 5 movies
+    setVisibleMoviesCount(3); // Reset to show 3 movies
   };
 
   useEffect(() => {
     fetchMovieDetails();
     fetchGenres();
-  }, [movieId, fetchMovieDetails]);
+  }, [movieId, fetchMovieDetails, fetchGenres]);
 
   if (loading) {
     return <div className="text-center">Loading...</div>;
@@ -190,9 +190,9 @@ const MovieDetails = () => {
       {visibleMoviesCount < relatedMovies.length ? (
         <button
           onClick={handleSeeMore}
-          className="relative group mt-4 mb-4 px-4 py-2 rounded-lg bg-blue-950 text-blue-200 text-lg font-bold hover:text-white transition-all duration-200 flex mx-auto"
+          className="relative group mt-4 mb-4 px-4 py-2 rounded-lg bg-black text-white text-lg font-bold hover:text-white transition-all duration-200 flex mx-auto"
         >
-          <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 to-cyan-400 rounded-lg blur opacity-60 group-hover:opacity-100 transition duration-200"></div>
+          <div className="absolute -inset-1 bg-gradient-to-r from-black via-gray-900 to-gray-600 rounded-lg blur opacity-60 group-hover:opacity-90 transition duration-300 ease-in-out shadow-2xl group-hover:shadow-[0_0_15px_5px_rgba(255,255,255,0.5)]"></div>
           <span className="relative">See More</span>
         </button>
       ) : (

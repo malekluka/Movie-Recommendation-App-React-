@@ -40,6 +40,7 @@ function Header() {
   const searchContainerRef = useRef(null);
   const filterPopupRef = useRef(null); // Add a ref for the filter popup
   const searchInputRef = useRef(null); // Ref for the search input
+  const API_KEY = import.meta.env.MY_TMDB_API_KEY
 
   const cache = useMemo(() => new Map(), []); // Cache to store fetched results
   const debouncedQuery = useDebounce(searchQuery, 1000); // Debounce delay of 500ms
@@ -56,7 +57,7 @@ function Header() {
       try {
         const response = await axios.get('https://api.themoviedb.org/3/discover/movie', {
           params: {
-            api_key: '28a9d4a5fcb0241d7210c3f1d17f63f4',
+            api_key: import.meta.env.MY_TMDB_API_KEY,
             language: 'en-US',
             include_adult: false,
             page: 1,
@@ -179,7 +180,7 @@ function Header() {
       // If not in cache, make the API call
       const response = await axios.get('https://api.themoviedb.org/3/search/movie', {
         params: {
-          api_key: '28a9d4a5fcb0241d7210c3f1d17f63f4',
+          api_key: API_KEY,
           language: 'en-US',
           query,
         },
@@ -196,7 +197,7 @@ function Header() {
         } catch (error) {
       console.error('Error searching for movies:', error);
     }
-  }, [cache, filterContent]);
+  }, [cache, filterContent, API_KEY]);
   
   // Trigger search when debounced query changes
   useEffect(() => {

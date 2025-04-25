@@ -16,7 +16,8 @@ function HomePage() {
   const [genres, setGenres] = useState([]);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [scrollPosition, setScrollPosition] = useState(0);
-
+  const API_KEY = import.meta.env.MY_TMDB_API_KEY
+  
   useEffect(() => {
     const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
@@ -29,16 +30,16 @@ function HomePage() {
       try {
         const [trendingResponse, newReleasesResponse, topRatedResponse, upcomingResponse] = await Promise.all([
           axios.get('https://api.themoviedb.org/3/trending/movie/day', {
-            params: { api_key: '28a9d4a5fcb0241d7210c3f1d17f63f4', language: 'en-US' },
+            params: { api_key: API_KEY, language: 'en-US' },
           }),
           axios.get('https://api.themoviedb.org/3/movie/now_playing', {
-            params: { api_key: '28a9d4a5fcb0241d7210c3f1d17f63f4', language: 'en-US', region: 'US' },
+            params: { api_key: API_KEY, language: 'en-US', region: 'US' },
           }),
           axios.get('https://api.themoviedb.org/3/movie/top_rated', {
-            params: { api_key: '28a9d4a5fcb0241d7210c3f1d17f63f4', language: 'en-US' },
+            params: { api_key: API_KEY, language: 'en-US' },
           }),
           axios.get('https://api.themoviedb.org/3/movie/upcoming', {
-            params: { api_key: '28a9d4a5fcb0241d7210c3f1d17f63f4', language: 'en-US', region: 'US' },
+            params: { api_key: API_KEY, language: 'en-US', region: 'US' },
           }),
         ]);
 
@@ -52,7 +53,7 @@ function HomePage() {
     };
     const fetchGenres = async () => {
       try {
-        const response = await axios.get(`https://api.themoviedb.org/3/genre/movie/list?api_key=${'28a9d4a5fcb0241d7210c3f1d17f63f4'}&language=en-US`);
+        const response = await axios.get(`https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}&language=en-US`);
         setGenres(response.data.genres);
       } catch (error) {
         console.error('Error fetching genres:', error);
@@ -61,7 +62,7 @@ function HomePage() {
 
     fetchMovies();
     fetchGenres();
-  }, []);
+  }, [API_KEY]);
   const getGenreNames = (genreIds) => {
     return genreIds.map((id) => {
       const genre = genres.find((genre) => genre.id === id);
@@ -99,7 +100,7 @@ function HomePage() {
       {/* Trending Movies Section */}
       <div className="mt-8">
         <div className="flex justify-center">
-          <h2 className="text-xl font-bold text-center mb-4 bg-gray-900 text-white py-2 px-4 border-2 border-black rounded-lg shadow-lg font-header">
+          <h2 className="text-xl font-bold text-center mb-4 bg-gray-900 text-white py-2 px-4 border-2 border-black rounded-lg shadow-lg font-header animate-bounce">
             Trending
           </h2>
         </div>
@@ -162,7 +163,7 @@ function HomePage() {
       {/* New Releases Section - Cards */}
       <div className="mt-8 mb-12 flex flex-col items-center">
         <div className="mt-8 mb-8 flex justify-center">
-          <h2 className="text-xl font-bold text-center bg-red-600 text-white py-2 px-4 border-2 border-black rounded-lg shadow-lg">
+          <h2 className="text-xl font-bold text-center bg-red-600 text-white py-2 px-4 border-2 border-black rounded-lg shadow-lg animate-bounce">
             New Releases
           </h2>
         </div>
@@ -205,16 +206,16 @@ function HomePage() {
         {newReleases.length > 8 && (
           <button
             onClick={() => handleToggle('newReleases')}
-            className={`relative group mt-6 ${
+            className={`relative group mt-8 ${
               windowWidth >= 768
-                ? 'px-6 py-3 rounded-xl bg-blue-950 text-blue-200 text-lg font-extrabold'
-                : 'px-4 py-2 rounded-lg bg-blue-950 text-blue-200 text-md font-bold'
-            } hover:text-white transition-all duration-200`}
+                ? 'px-6 py-3 rounded-xl bg-black text-white text-lg font-extrabold'
+                : 'px-4 py-2 rounded-lg bg-black text-white text-md font-semibold'
+            } hover:text-white transition-all duration-300 ease-in-out`}
           >
             <div
               className={`absolute ${
                 windowWidth >= 768 ? '-inset-1' : '-inset-0.5'
-              } bg-gradient-to-r from-blue-500 to-cyan-400 rounded-xl blur opacity-60 group-hover:opacity-100 transition duration-200`}
+              } bg-gradient-to-r from-black via-gray-900 to-gray-600 rounded-xl blur opacity-60 group-hover:opacity-90 transition duration-300 ease-in-out shadow-2xl group-hover:shadow-[0_0_15px_5px_rgba(255,255,255,0.5)]`}
             ></div>
             <span className="relative">{showMoreNewReleases ? 'See Less' : 'See More'}</span>
           </button>
@@ -230,7 +231,7 @@ function HomePage() {
       {/* Top Rated Section - Cards */}
       <div className="mt-8 mb-12 flex flex-col items-center">
         <div className="mt-8 mb-8 flex justify-center ">
-          <h2 className="text-xl font-bold text-center bg-yellow-400 text-white py-2 px-4 border-2 border-black rounded-lg shadow-lg">
+          <h2 className="text-xl font-bold text-center bg-yellow-400 text-white py-2 px-4 border-2 border-black rounded-lg shadow-lg animate-bounce">
             Top Rated
           </h2>
         </div>
@@ -275,14 +276,14 @@ function HomePage() {
             onClick={() => handleToggle('topRated')}
             className={`relative group mt-6 ${
               windowWidth >= 768
-                ? 'px-6 py-3 rounded-xl bg-blue-950 text-blue-200 text-lg font-extrabold'
-                : 'px-4 py-2 rounded-lg bg-blue-950 text-blue-200 text-md font-bold'
-            } hover:text-white transition-all duration-200`}
+                ? 'px-6 py-3 rounded-xl bg-black text-white text-lg font-extrabold'
+                : 'px-4 py-2 rounded-lg bg-black text-white text-md font-semibold'
+            } hover:text-white transition-all duration-300 ease-in-out`}
           >
             <div
               className={`absolute ${
                 windowWidth >= 768 ? '-inset-1' : '-inset-0.5'
-              } bg-gradient-to-r from-blue-500 to-cyan-400 rounded-xl blur opacity-60 group-hover:opacity-100 transition duration-200`}
+              } bg-gradient-to-r from-black via-gray-900 to-gray-600 rounded-xl blur opacity-60 group-hover:opacity-90 transition duration-300 ease-in-out shadow-2xl group-hover:shadow-[0_0_15px_5px_rgba(255,255,255,0.5)]`}
             ></div>
             <span className="relative">{showMoreTopRated ? 'See Less' : 'See More'}</span>
           </button>
@@ -297,7 +298,7 @@ function HomePage() {
       {/* Upcoming Section - Cards with Alert */}
       <div className="mt-8 mb-12 flex flex-col items-center">
         <div className="mt-8 mb-4 flex justify-center">
-          <h2 className="text-xl font-bold text-center bg-blue-800 text-white py-2 px-4 border-2 border-black rounded-lg shadow-lg">
+          <h2 className="text-xl font-bold text-center bg-blue-800 text-white py-2 px-4 border-2 border-black rounded-lg shadow-lg animate-bounce">
             Upcoming
           </h2>
         </div>
@@ -335,8 +336,6 @@ function HomePage() {
               </Link>
             ))
           ) : (
-
-            
             <p>Loading upcoming movies...</p>
           )}
 
@@ -348,14 +347,14 @@ function HomePage() {
             onClick={() => handleToggle('upcoming')}
             className={`relative group mt-6 ${
               windowWidth >= 768
-                ? 'px-6 py-3 rounded-xl bg-blue-950 text-blue-200 text-lg font-extrabold'
-                : 'px-4 py-2 rounded-lg bg-blue-950 text-blue-200 text-md font-bold'
-            } hover:text-white transition-all duration-200`}
+                ? 'px-6 py-3 rounded-xl bg-black text-white text-lg font-extrabold'
+                : 'px-4 py-2 rounded-lg bg-black text-white text-md font-semibold'
+            } hover:text-white transition-all duration-300 ease-in-out`}
           >
             <div
               className={`absolute ${
                 windowWidth >= 768 ? '-inset-1' : '-inset-0.5'
-              } bg-gradient-to-r from-blue-500 to-cyan-400 rounded-xl blur opacity-60 group-hover:opacity-100 transition duration-200`}
+              } bg-gradient-to-r from-black via-gray-900 to-gray-600 rounded-xl blur opacity-60 group-hover:opacity-90 transition duration-300 ease-in-out shadow-2xl group-hover:shadow-[0_0_15px_5px_rgba(255,255,255,0.5)]`}
             ></div>
             <span className="relative">{showMoreUpcoming ? 'See Less' : 'See More'}</span>
           </button>
