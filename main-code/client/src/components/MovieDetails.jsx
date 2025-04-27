@@ -220,12 +220,12 @@ const MovieDetails = () => {
                         className="w-40 h-auto rounded-lg"
                       />
                     </div>
-                    <div className="ml-8">
-                      <h4 className="text-sm mb-2">
+                    <div style={{ maxWidth: '200px', wordWrap: 'break-word', margin: '0 auto' }}>
+                    <h4 className="text-sm text-center mb-2">
                         <strong>Release Date:</strong>{" "}
                         {related.release_date || "Unknown"}
                       </h4>
-                      <h4 className="text-sm mb-2">
+                      <h4 className="text-sm text-center mb-2">
                         <strong>Genres:</strong>{" "}
                         {related.genre_ids.length > 0
                           ? related.genre_ids
