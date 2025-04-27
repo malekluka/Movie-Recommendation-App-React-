@@ -14,6 +14,7 @@ dist-ssr
 
 # Exclude all .env files
 server/.env
+*.env
 
 # Editor directories and files
 .vscode/*

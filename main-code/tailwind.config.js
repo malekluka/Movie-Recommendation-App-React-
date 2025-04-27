@@ -8,6 +8,7 @@ export default {
       animation: {
         fadeIn: 'fadeIn 1.5s ease-in-out',
         slideIn: 'slideIn 1.5s ease-in-out',
+        pulse: 'pulse 2s infinite', // Added pulse animation
       },
       keyframes: {
         fadeIn: {
@@ -17,6 +18,10 @@ export default {
         slideIn: {
           '0%': { transform: 'translateX(-100%)', opacity: '0' },
           '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
+        pulse: { // Added keyframes for pulse
+          '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+          '50%': { transform: 'scale(1.05)', opacity: '0.9' },
         },
       },
     },

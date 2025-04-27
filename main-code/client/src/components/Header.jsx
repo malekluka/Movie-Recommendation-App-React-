@@ -40,7 +40,7 @@ function Header() {
   const searchContainerRef = useRef(null);
   const filterPopupRef = useRef(null); // Add a ref for the filter popup
   const searchInputRef = useRef(null); // Ref for the search input
-  const API_KEY = import.meta.env.MY_TMDB_API_KEY
+  const API_KEY = import.meta.env.VITE_TMDB_API_KEY; // Use the correct environment variable
 
   const cache = useMemo(() => new Map(), []); // Cache to store fetched results
   const debouncedQuery = useDebounce(searchQuery, 1000); // Debounce delay of 500ms
@@ -57,7 +57,7 @@ function Header() {
       try {
         const response = await axios.get('https://api.themoviedb.org/3/discover/movie', {
           params: {
-            api_key: import.meta.env.MY_TMDB_API_KEY,
+            api_key: import.meta.env.VITE_TMDB_API_KEY,
             language: 'en-US',
             include_adult: false,
             page: 1,
@@ -422,7 +422,7 @@ function Header() {
                       style={{
                         fontSize: window.innerWidth <= 480 ? "12px" : "16px",
                         fontWeight: "800",
-                        color: "#B8860B",
+                        color: '#DAA520', textShadow: '1px 1px 2px rgba(0,0,0,0.1)',
                         textTransform: "uppercase",
                         letterSpacing: "0.5px",
                         marginBottom: "8px",
