@@ -267,16 +267,16 @@ function HomePage() {
                       🎬 {movie.title}
                     </h3>
                     {/* Smaller title */}
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-sm">
                       <strong>Rating:</strong> {movie.vote_average}
                     </p>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-sm">
                       <strong>Category:</strong>{" "}
                       {movie.genre_ids.length > 0
                         ? getGenreNames(movie.genre_ids)
                         : "Unknown"}
                     </p>
-                    <p className="text-gray-600 text-sm mt-1">
+                    <p className="text-sm mt-1">
                       <strong>Release Date:</strong> {movie.release_date}
                     </p>
                   </div>
@@ -389,16 +389,16 @@ function HomePage() {
                     >
                       🎬 {movie.title}
                     </h3>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-sm">
                       <strong>Rating:</strong> {movie.vote_average}
                     </p>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-sm">
                       <strong>Category:</strong>{" "}
                       {movie.genre_ids.length > 0
                         ? getGenreNames(movie.genre_ids)
                         : "Unknown"}
                     </p>
-                    <p className="text-gray-600 text-sm mt-1">
+                    <p className="text-sm mt-1">
                       <strong>Release Date:</strong> {movie.release_date}
                     </p>
                   </div>
@@ -508,16 +508,16 @@ function HomePage() {
                     >
                       🎬 {movie.title}
                     </h3>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-sm">
                       <strong>Rating:</strong> {movie.vote_average}
                     </p>
-                    <p className="text-gray-600 text-sm">
+                    <p className="text-sm">
                       <strong>Category:</strong>{" "}
                       {movie.genre_ids.length > 0
                         ? getGenreNames(movie.genre_ids)
                         : "Unknown"}
                     </p>
-                    <p className="text-gray-600 text-sm mt-1">
+                    <p className="text-sm mt-1">
                       <strong>Release Date:</strong> {movie.release_date}
                     </p>
                   </div>

@@ -202,7 +202,11 @@ const MovieDetails = () => {
                   className="border mr-3 rounded-lg p-2 hover:shadow-lg transition-shadow"
                 >
                   <Link to={`/movies/${related.id}`} className="flex flex-col">
-                    <h2 className="text-center font-semibold text-xl mt-2 mb-2 truncate">
+                    <h2 className="text-center font-semibold text-xl mt-2 mb-2 truncate"
+                     style={{
+                      color: "#DAA520",
+                      textShadow: "1px 1px 2px rgba(0,0,0,0.1)",
+                    }}>
                     🎬 {related.title}
                     </h2>
                     <div className="flex justify-center mb-2">
