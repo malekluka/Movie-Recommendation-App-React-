@@ -222,7 +222,7 @@ function HomePage() {
                 <Link
                   to={`/movies/${movie.id}`}
                   key={movie.id}
-                  className="bg-white rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl"
+                  className="bg-white rounded-lg shadow-md overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl border border-gray-200"
                   style={{
                     width:
                       windowWidth < 700
@@ -347,7 +347,7 @@ function HomePage() {
                 <Link
                   to={`/movies/${movie.id}`}
                   key={movie.id}
-                  className="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl"
+                  className="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl border border-gray-200"
                   style={{
                     width:
                       windowWidth < 700
@@ -474,7 +474,7 @@ function HomePage() {
                 <Link
                   to={`/movies/${movie.id}`}
                   key={movie.id}
-                  className="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl"
+                  className="bg-white rounded-lg shadow-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-2xl border border-gray-200"
                   style={{
                     width:
                       windowWidth < 700
