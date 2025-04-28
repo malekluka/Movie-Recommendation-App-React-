@@ -8,12 +8,20 @@ const MovieDetails = () => {
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [trailer, setTrailer] = useState(null);
   const [relatedMovies, setRelatedMovies] = useState([]);
   const [visibleMoviesCount, setVisibleMoviesCount] = useState(3); // Number of movies to show initially
   const [genres, setGenres] = useState([]); // Store all genres
 
   const API_KEY = import.meta.env.VITE_TMDB_API_KEY; // Use the correct environment variable
+
+  useEffect(() => {
+      const handleResize = () => setWindowWidth(window.innerWidth);
+      window.addEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
   const fetchTrailer = useCallback(
     async (id) => {
       try {
@@ -107,7 +115,7 @@ const MovieDetails = () => {
         {movie && (
           <div className="md:w-3/4 mb-4 md:mr-4">
             <div className="mb-8">
-              <h1 className="text-4xl font-bold mb-6">
+              <h1 className="text-3xl font-bold mb-6" style={{fontSize: windowWidth <= 768 ? '25px' : '30px'}}>
                 <span
                   style={{
                     color: "#DAA520",
@@ -121,7 +129,6 @@ const MovieDetails = () => {
 
               <div className="flex flex-col mb-4">
                 {trailer ? (
-                  <div className="mb-4">
                     <iframe
                       width="80%"
                       height="400"
@@ -130,8 +137,9 @@ const MovieDetails = () => {
                       frameBorder="0"
                       allowFullScreen
                       className="rounded-lg"
+                      style={{width: windowWidth < 768 ? '100%' : windowWidth == 768 ? '90%' : windowWidth == 1024 ? '90%' : '80%',
+                      height: windowWidth <= 768 ? '250px' : '410px'}}
                     />
-                  </div>
                 ) : (
                   <div className="mb-4">
                     <img
@@ -147,36 +155,36 @@ const MovieDetails = () => {
                 )}
               </div>
               {movie.tagline && (
-                <h2 className="text-2xl italic mb-2">{movie.tagline}</h2>
+                <h2 className={`italic mb-2 ${windowWidth <= 768 ? "text-lg" : "text-xl"}`}>{movie.tagline}</h2>
               )}
             </div>
 
-            <p className="mb-4">
+            <p className="mb-4" style={{ fontSize: windowWidth <= 768 ? '16px' : '18px' }}>
               <strong>Release Date:</strong> {movie.release_date}
             </p>
-            <p className="mb-4">
+            <p className="mb-4" style={{ fontSize: windowWidth <= 768 ? '16px' : '18px' }}>
               <strong>Rating:</strong> {movie.vote_average}/10 (
               {movie.vote_count} votes)
             </p>
-            <p className="mb-4">
+            <p className="mb-4" style={{ fontSize: windowWidth <= 768 ? '16px' : '18px' }}>
               <strong>Runtime:</strong> {movie.runtime} minutes
             </p>
-            <p className="mb-4">
+            <p className="mb-4" style={{ fontSize: windowWidth <= 768 ? '16px' : '18px' }}>
               <strong>Language:</strong> {movie.original_language.toUpperCase()}
             </p>
 
-            <p className="mb-4">
+            <p className="mb-4" style={{ fontSize: windowWidth <= 768 ? '16px' : '18px' }}>
               <strong>Overview:</strong> {movie.overview}
             </p>
             {movie.genres && movie.genres.length > 0 && (
-              <p className="mb-4">
+              <p className="mb-4" style={{ fontSize: windowWidth <= 768 ? '16px' : '18px' }}>
                 <strong>Genres:</strong>{" "}
                 {movie.genres.map((genre) => genre.name).join(", ")}
               </p>
             )}
             {movie.production_companies &&
               movie.production_companies.length > 0 && (
-                <p className="mb-4">
+                <p className="mb-4" style={{ fontSize: windowWidth <= 768 ? '16px' : '18px' }}>
                   <strong>Production Companies:</strong>{" "}
                   {movie.production_companies
                     .map((company) => company.name)
@@ -188,11 +196,11 @@ const MovieDetails = () => {
 
         {/* Related Movies Section */}
         <div
-          className={`border-2 md:pl-4 md:w-1/4 transition-all duration-300 ${
+          className={`border-2 md:pl-4 md:w-1/4 transition-all duration-300${
             displayedMovies.length > 0 ? "h-auto" : "h-[50%]"
-          }`}
+          }`} style={{width: windowWidth <= 768 ? 220 : 300 , margin: '0 auto'}} 
         >
-          <h3 className="text-2xl font-bold mt-2 mb-4">Related Movies</h3>
+          <h3 className="text-2xl text-center font-bold mt-2 mb-4" style={{fontSize: windowWidth < 768 ? '19px' : '23px'}}>Related Movies</h3>
 
           {displayedMovies.length > 0 ? (
             <ul className="space-y-2">
