@@ -121,7 +121,7 @@ function HomePage() {
           style={{
             maxWidth: "700px", // Restrict max width to 400px
             width: "70%", // Ensure it adjusts to smaller screens
-            maxHeight: windowWidth < 450 ? "360px" : "600px", // Set a maximum height for larger screens
+            maxHeight: windowWidth < 450 ? "370px" : "610px", // Set a maximum height for larger screens
           }}
         >
           {trendingMovies.length > 0 ? (
@@ -233,7 +233,7 @@ function HomePage() {
                         height: windowWidth < 700
                         ? "400px"
                         : windowWidth == 768
-                        ? "410px"
+                        ? "425px"
                         : "425px",
                   }} // Dynamically adjust width
                 >
@@ -358,7 +358,7 @@ function HomePage() {
                         height: windowWidth < 700
                         ? "400px"
                         : windowWidth == 768
-                        ? "410px"
+                        ? "425px"
                         : "425px",
                   }} // Dynamically adjust width
                 >
@@ -485,7 +485,7 @@ function HomePage() {
                         height: windowWidth < 700
                         ? "400px"
                         : windowWidth == 768
-                        ? "410px"
+                        ? "425px"
                         : "425px",
                   }} // Dynamically adjust width
                 >
