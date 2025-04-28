@@ -151,7 +151,7 @@ function HomePage() {
                   />
                   <div className="p-2 sm:p-4 bg-gray-900 text-white">
                     <h2
-                      className="text-md mb-2 font-bold text-center"
+                      className="text-md mb-2 font-bold text-center truncate"
                       style={{
                         fontSize: windowWidth > 700 ? 23 : 16,
                         color: "#DAA520",
@@ -226,10 +226,15 @@ function HomePage() {
                   style={{
                     width:
                       windowWidth < 700
-                        ? "200px"
+                        ? "220px"
                         : windowWidth == 768
                         ? "220px"
                         : "250px",
+                        height: windowWidth < 700
+                        ? "400px"
+                        : windowWidth == 768
+                        ? "410px"
+                        : "425px",
                   }} // Dynamically adjust width
                 >
                   {/* New! Label */}
@@ -258,7 +263,7 @@ function HomePage() {
                   {/* Movie Details */}
                   <div className="p-4">
                     <h3
-                      className="text-lg font-semibold mb-2"
+                      className="text-lg font-semibold mb-2 truncate"
                       style={{
                         color: "#DAA520",
                         textShadow: "1px 1px 2px rgba(0,0,0,0.1)",
@@ -292,7 +297,7 @@ function HomePage() {
         {newReleases.length > 8 && (
           <button
             onClick={() => handleToggle("newReleases")}
-            className={`relative group mt-8 ${
+            className={`relative group mt-9 ${
               windowWidth >= 768
                 ? "px-5 py-3 rounded-xl bg-black text-white text-lg font-extrabold"
                 : "px-4 py-2 rounded-lg bg-black text-white text-md font-semibold"
@@ -346,10 +351,15 @@ function HomePage() {
                   style={{
                     width:
                       windowWidth < 700
-                        ? "200px"
+                        ? "220px"
                         : windowWidth == 768
                         ? "220px"
                         : "250px",
+                        height: windowWidth < 700
+                        ? "400px"
+                        : windowWidth == 768
+                        ? "410px"
+                        : "425px",
                   }} // Dynamically adjust width
                 >
                   {/* Top Rated Star Label */}
@@ -381,7 +391,7 @@ function HomePage() {
                   {/* Movie Details */}
                   <div className="p-4">
                     <h3
-                      className="text-lg font-semibold mb-2"
+                      className="text-lg font-semibold mb-2 truncate"
                       style={{
                         color: "#DAA520",
                         textShadow: "1px 1px 2px rgba(0,0,0,0.1)",
@@ -414,7 +424,7 @@ function HomePage() {
         {topRated.length > 8 && (
           <button
             onClick={() => handleToggle("topRated")}
-            className={`relative group mt-6 ${
+            className={`relative group mt-9 ${
               windowWidth >= 768
                 ? "px-5 py-3 rounded-xl bg-black text-white text-lg font-extrabold"
                 : "px-4 py-2 rounded-lg bg-black text-white text-md font-semibold"
@@ -468,10 +478,15 @@ function HomePage() {
                   style={{
                     width:
                       windowWidth < 700
-                        ? "200px"
+                        ? "220px"
                         : windowWidth == 768
                         ? "220px"
                         : "250px",
+                        height: windowWidth < 700
+                        ? "400px"
+                        : windowWidth == 768
+                        ? "410px"
+                        : "425px",
                   }} // Dynamically adjust width
                 >
                   {/* Upcoming Label */}
@@ -500,7 +515,7 @@ function HomePage() {
                   {/* Movie Details */}
                   <div className="p-4">
                     <h3
-                      className="text-lg font-semibold mb-2"
+                      className="text-lg font-semibold mb-2 truncate"
                       style={{
                         color: "#DAA520",
                         textShadow: "1px 1px 2px rgba(0,0,0,0.1)",
@@ -533,7 +548,7 @@ function HomePage() {
         {upcoming.length > 8 && (
           <button
             onClick={() => handleToggle("upcoming")}
-            className={`relative group mt-6 ${
+            className={`relative group mt-9 ${
               windowWidth >= 768
                 ? "px-5 py-3 rounded-xl bg-black text-white text-lg font-extrabold"
                 : "px-4 py-2 rounded-lg bg-black text-white text-md font-semibold"
