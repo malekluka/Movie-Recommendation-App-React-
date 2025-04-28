@@ -119,9 +119,9 @@ function HomePage() {
         <div
           className="carousel-container mx-auto rounded-lg overflow-hidden shadow-lg bg-black p-4"
           style={{
-            maxWidth: "700px", // Restrict max width to 400px
+            maxWidth: "700px", // Restrict max width to 700px
             width: "70%", // Ensure it adjusts to smaller screens
-            maxHeight: windowWidth < 450 ? "370px" : "610px", // Set a maximum height for larger screens
+            maxHeight: windowWidth < 450 ? "370px" : "620px", // Set a maximum height for larger screens
           }}
         >
           {trendingMovies.length > 0 ? (
